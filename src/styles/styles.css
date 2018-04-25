@@ -3,12 +3,29 @@
     flex-wrap: wrap;
 }
 
-div{
+body{
+    background-color: #36384c;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+
+}
+
+.container{
     display: inline-block;
     margin: 1rem;
+    background-color: #849974;
+    padding: 1rem;
+    border: 1px solid #e3bab3;
 }
 p{
     text-align: center;
+    margin: .5rem;
+    font-size: 2rem;
+}
+
+h3{
+    margin: 0;
+    font-size: 1rem;
 }
 
 .hide{
