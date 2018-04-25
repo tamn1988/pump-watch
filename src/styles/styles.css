@@ -1,0 +1,16 @@
+#app{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div{
+    display: inline-block;
+    margin: 1rem;
+}
+p{
+    text-align: center;
+}
+
+.hide{
+    display: none;
+}
