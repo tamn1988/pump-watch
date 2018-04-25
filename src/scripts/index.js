@@ -8,6 +8,11 @@ const socket = new WebSocket('wss://stream.binance.com:9443/ws/!ticker@arr');
 
 let startingData;
 
+setInterval( ()=> {
+    startingData = undefined;
+    console.log('Reset');
+}, 60000)
+
 socket.addEventListener('message', ((event) => {
 
     if (!startingData) {
@@ -16,7 +21,7 @@ socket.addEventListener('message', ((event) => {
 
     }
     let filteredData = JSON.parse(event.data).filter((currency) => {
-        return currency.s.indexOf('BTC') !== -1;
+        return currency.s.indexOf('BTC') !== -1 && currency.q >= 1000
     })
     filteredData.map((currency) => {
         if (!startingData[currency.s]) {
@@ -41,10 +46,16 @@ socket.addEventListener('message', ((event) => {
     let paragraph = document.querySelectorAll('.container p')
     
 for (let i = 0; i < paragraph.length; i++){
-    if (Number(paragraph[i].innerHTML) <  0){
-        container[i].classList.add('hide');
+    if (Number(paragraph[i].innerHTML) >=  .9){
+        container[i].classList.add('alert');
     } else if (Number(paragraph[i].innerHTML) >  0){
         container[i].classList.remove('hide');
+        container[i].classList.remove('alert');
+
+    } else{
+        container[i].classList.add('hide')
+        container[i].classList.remove('alert');
+
     }
 }
 
