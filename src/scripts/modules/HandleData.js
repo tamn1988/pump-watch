@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
- 
 class HandleData {
     constructor() {
         this.dataToExport = undefined;
@@ -30,35 +27,6 @@ class HandleData {
             }
             let liveData = this.filterAndParse(event);
             this.addToDataToExport(liveData);
-
-        //     let template = Object.keys(this.dataToExport).map((key, i) => {
-        //         return (
-        //             <div className="container" key={this.dataToExport[key]['s']}>
-        //                 <h3 key={this.dataToExport[key]['s'] + 'name'}>{this.dataToExport[key]['s']}</h3>
-        //                 <p key={this.dataToExport[key]['s'] + 'change'}>{this.dataToExport[key]['change']}</p>
-        //             </div>
-        //         )
-
-        //     })
-
-        //     ReactDOM.render(template, app);
-
-        //     let container = document.querySelectorAll('.container');
-        //     let paragraph = document.querySelectorAll('.container p')
-
-        //     for (let i = 0; i < paragraph.length; i++) {
-        //         if (Number(paragraph[i].innerHTML) >= .9) {
-        //             container[i].classList.add('alert');
-        //         } else if (Number(paragraph[i].innerHTML) > 0) {
-        //             container[i].classList.remove('hide');
-        //             container[i].classList.remove('alert');
-
-        //         } else {
-        //             container[i].classList.add('hide')
-        //             container[i].classList.remove('alert');
-
-        //         }
-        //     }
         }))
     }
 

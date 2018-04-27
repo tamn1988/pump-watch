@@ -4,6 +4,7 @@ import HandleData from '../scripts/modules/HandleData.js'
 import '../styles/styles.css';
 
 const dataStream = new HandleData();
+
 const app = document.getElementById('app');
 
 class CryptoviewerApp extends React.Component {
@@ -36,6 +37,28 @@ class CryptoviewerApp extends React.Component {
 }
 
 const Change = (props) => {
+    let container = document.querySelectorAll('.container');
+    let paragraph = document.querySelectorAll('.container p')
+    const alertSound = () => {
+        const audio = new Audio('../src/alert.mp3');
+        audio.loop = false;
+        audio.play();
+    }
+
+    for (let i = 0; i < paragraph.length; i++) {
+        if (Number(paragraph[i].innerHTML) >= .9) {
+            alertSound();
+            container[i].classList.add('alert');
+        } else if (Number(paragraph[i].innerHTML) > 0) {
+            container[i].classList.remove('hide');
+            container[i].classList.remove('alert');
+
+        } else {
+            container[i].classList.add('hide')
+            container[i].classList.remove('alert');
+
+        }
+    }
     if (props.altcoins) {
         return Object.keys(props.altcoins).map((key, i) => {
             return (
@@ -49,8 +72,3 @@ const Change = (props) => {
     return <div>Waiting...</div>
 }
 ReactDOM.render(<CryptoviewerApp />, app)
-
-
-
-
-
