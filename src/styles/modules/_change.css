@@ -1,0 +1,48 @@
+.change{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 1rem;
+
+    &__container{
+        display: flex;
+        flex-direction: column;
+        margin: .5rem;
+        padding: .5rem;
+        min-width: 100px;
+        width: 15%;
+        background-color: $mainGreen;
+        border: 1px solid $mainPeach;
+        box-shadow: .5px .5px .5px black;
+        position: relative;
+    }
+
+    &__link{
+        text-decoration: none;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    &__title{
+        margin: 0;
+        font-weight: 300;
+    }
+
+    &__price{
+        margin: .3rem 0 0 0;
+        text-align: center;
+    }
+
+    &--alert{
+        background-color: rgb(245, 75, 75);
+        order: -1;
+    }
+
+    &__hide{
+        display: none;
+    }
+}

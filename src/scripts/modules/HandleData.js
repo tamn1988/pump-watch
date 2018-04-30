@@ -2,7 +2,6 @@ class HandleData {
     constructor() {
         this.dataToExport = undefined;
         this.socket = new WebSocket('wss://stream.binance.com:9443/ws/!ticker@arr');
-        this.getStartingDataToCompare = this.getStartingDataToCompare.bind(this);
         this.convertArrayToObj = this.convertArrayToObj.bind(this);
         this.filterAndParse = this.filterAndParse.bind(this);
         this.addToDataToExport = this.addToDataToExport.bind(this);
@@ -16,24 +15,18 @@ class HandleData {
         setInterval( ()=>{
             this.dataToExport = undefined;
             console.log('reset');
-        }, 60000)
+        }, 120000)
     }
+
 
     getData() {
         this.socket.addEventListener('message', ((event) => {
-            if (!this.dataToExport) {
-                this.getStartingDataToCompare(event);
-                this.dataToExport = this.convertArrayToObj(this.dataToExport);
-            }
             let liveData = this.filterAndParse(event);
+            if (!this.dataToExport) {
+                this.dataToExport = this.convertArrayToObj(liveData);
+            }
             this.addToDataToExport(liveData);
         }))
-    }
-
-    getStartingDataToCompare(event) {
-        if (!this.dataToExport) {
-            this.dataToExport = this.filterAndParse(event);
-        }
     }
 
     convertArrayToObj(array) {
@@ -49,7 +42,8 @@ class HandleData {
 
     filterAndParse(data) {
         return JSON.parse(data.data).filter((altCoin) => {
-            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000;
+            //Filter conditions: Only btc pairs with greater than 1k volume, and current price is higher than yesterdays closing price
+            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000 && (altCoin.c > altCoin.x)
         })
     }
 
@@ -58,7 +52,13 @@ class HandleData {
             if (!this.dataToExport[altCoin.s]) {
                 this.dataToExport[altCoin.s] = altCoin;
             };
-            this.dataToExport[altCoin.s]['change'] = this.roundToTwo((((altCoin.c - this.dataToExport[altCoin.s]['c']) / this.dataToExport[altCoin.s]['c']) * 100), 2)
+            let percentChange = this.roundToTwo((((altCoin.c - this.dataToExport[altCoin.s]['c']) / this.dataToExport[altCoin.s]['c']) * 100), 2)
+                if (percentChange >= 0){
+                    this.dataToExport[altCoin.s]['change'] = percentChange;
+                } else {
+                    delete this.dataToExport[altCoin.s];
+                }
+
         })
     }
 

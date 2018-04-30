@@ -1,3 +1,11 @@
+@import 'modules/_globals.css';
+@import 'modules/_wrapper';
+@import 'modules/_flex.css';
+@import 'modules/_variables.css';
+@import 'modules/_change.css';
+@import 'modules/_chart.css';
+
+
 #app{
     display: flex;
     flex-wrap: wrap;
@@ -5,38 +13,17 @@
     max-width: 1135px;
 }
 
-body{
-    background-color: #36384c;
-    color: #fff;
-    font-family: 'Lato', sans-serif;
-
-}
-
-.container{
-    display: inline-block;
-    margin: 1rem;
-    background-color: #849974;
-    padding: 1rem;
-    border: 1px solid #e3bab3;
-    width: 150px;
-}
-p{
-    text-align: center;
-    margin: .5rem;
-    font-size: 2.5rem;
-}
-
-h3{
-    margin: 0;
-    font-size: 1rem;
-}
-
-.hide{
+/* .hide{
     display: none;
 }
 
 .alert{
     background-color: rgb(245, 75, 75);
-    order: -1;
+    order: -1111;
 }
 
+
+.alert__container{
+    border: 1px solid #fff;
+    width: 30%;
+} */

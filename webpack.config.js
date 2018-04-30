@@ -28,24 +28,24 @@ module.exports = {
         use: ExtractTextPlugin.extract({
           use: ["css-loader", "postcss-loader"],
           fallback: 'style-loader'
-        })
-        // test: /\.css$/,
-        // exclude: /node_modules/,
-        // use:
-        //   [
-        //     {
-        //       loader: 'style-loader',
-        //     },
-        //     {
-        //       loader: 'css-loader',
-        //       options: {
-        //         importLoaders: 1,
-        //       }
-        //     },
-        //     {
-        //       loader: 'postcss-loader'
-        //     }
-        //   ]
+        }),
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use:
+          [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+              }
+            },
+            {
+              loader: 'postcss-loader'
+            }
+          ]
       }
     ]
   },

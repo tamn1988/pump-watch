@@ -1,0 +1,6 @@
+.chart{
+    margin: 1rem auto;
+    height: 300px;
+    width: 600px;
+    border: 1px solid $mainPeach;
+}
