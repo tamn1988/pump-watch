@@ -61,7 +61,6 @@ body{
     margin: 1rem auto;
     height: 300px;
     width: 600px;
-    border: 1px solid #e3bab3;
 }
 #app{
     display: flex;
