@@ -30,7 +30,7 @@ class CryptoviewerApp extends React.Component {
                     altcoins: dataStream.dataToExport,
                 }
             })
-        }, 1000)
+        }, 400)
     }
 
     handleGetChart(e) {
@@ -46,7 +46,7 @@ class CryptoviewerApp extends React.Component {
                     chartData: getChartData.formattedData
                 }
             })
-        }, 1000)
+        },100)
     }
 
     render() {
@@ -90,8 +90,8 @@ const CoinChart = (props) => {
     if (props.chartData)
         return (
             <LineChart width={600} height={300} data={props.chartData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>>
-                <Line type="monotone" dataKey="close" stroke="#9ad76b" dot={false} />
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }} animationDuration={300}>
+                <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
                 <XAxis dataKey="name" hide={true} />
                 <YAxis type="number" hide={true} domain={['dataMin', 'dataMax']} />
             </LineChart>
