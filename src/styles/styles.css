@@ -9,7 +9,7 @@
 @import 'modules/_center-panel.css';
 @import 'modules/_header.css';
 @import 'modules/_trade-history.css';
-
+@import 'modules/_order-book.css';
 
 #app{
     margin: 0 auto;

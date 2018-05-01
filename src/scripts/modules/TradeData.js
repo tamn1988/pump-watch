@@ -35,3 +35,4 @@ class TradeData {
 }
 
 export default TradeData
+

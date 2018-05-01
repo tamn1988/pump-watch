@@ -1,0 +1,34 @@
+.order-book{
+    
+    &__ask__container{
+        overflow: auto;
+    }
+
+    &__bid__container{
+        overflow: auto;
+    }
+
+    &__ask{
+        display: flex;
+        justify-content: space-between;
+    }
+    &__bid{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__bid--price{
+        color: rgb(102, 197, 102);
+    }
+
+    &__bid--amount{
+        color: gray;
+    }
+    &__ask--price{
+        color: rgb(238, 81, 81);
+    }
+
+    &__ask--amount{
+        color: gray;
+    }
+}
