@@ -1,0 +1,16 @@
+.trade-history{
+    display: flex;
+    justify-content: space-between;
+
+    &__price{
+        color: $mainGreen;
+    }
+
+    &__qty{
+        color: $mainPeach;
+    }
+
+    &__time{
+        color: rgb(173, 172, 172);
+    }
+}

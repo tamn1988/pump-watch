@@ -4,26 +4,15 @@
 @import 'modules/_variables.css';
 @import 'modules/_change.css';
 @import 'modules/_chart.css';
+@import 'modules/_left-panel.css';
+@import 'modules/_right-panel.css';
+@import 'modules/_center-panel.css';
+@import 'modules/_header.css';
+@import 'modules/_trade-history.css';
 
 
 #app{
-    display: flex;
-    flex-wrap: wrap;
     margin: 0 auto;
-    max-width: 1135px;
+    max-width: 1300px;
 }
 
-/* .hide{
-    display: none;
-}
-
-.alert{
-    background-color: rgb(245, 75, 75);
-    order: -1111;
-}
-
-
-.alert__container{
-    border: 1px solid #fff;
-    width: 30%;
-} */

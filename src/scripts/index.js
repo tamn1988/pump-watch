@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom'
 import HandleData from '../scripts/modules/HandleData.js'
 import Alert from '../scripts/modules/AlertToggle.js'
 import ChartData from '../scripts/modules/ChartData.js'
-import { LineChart, Line, XAxis, YAxis } from 'recharts';
+import TradeData from '../scripts/modules/TradeData.js'
+import { LineChart, Line, XAxis, YAxis } from 'recharts'
 import '../styles/styles.css';
 
 const dataStream = new HandleData();
 const alert = new Alert();
 const app = document.getElementById('app');
-let getChartData = new ChartData();
+const getChartData = new ChartData();
+const getTradeData = new TradeData();
 
 class CryptoviewerApp extends React.Component {
     constructor(props) {
@@ -17,6 +19,8 @@ class CryptoviewerApp extends React.Component {
         this.populateState = this.populateState.bind(this);
         this.callChartData = this.callChartData.bind(this);
         this.handleGetChart = this.handleGetChart.bind(this);
+        this.coin;
+        this.tradeHistoryTimer;
         this.populateState();
         this.state = {
             pinned: [],
@@ -34,9 +38,24 @@ class CryptoviewerApp extends React.Component {
     }
 
     handleGetChart(e) {
-        let coin = e.target.getAttribute('coin-name');
-        getChartData.fetchData(coin)
+        clearInterval(this.tradeHistoryTimer);
+        this.coin = e.target.getAttribute('coin-name');
+        getChartData.fetchData(this.coin);
         this.callChartData();
+        this.tradeHistoryTimer = setInterval(()=>{
+            getTradeData.fetchData(this.coin);
+            this.callTradeData();
+        }, 1500)
+    }
+
+    callTradeData() {
+        setTimeout(() => {
+            this.setState(() => {
+                return {
+                    tradeHistory: getTradeData.dataOut
+                }
+            })
+        }, 1000)
     }
 
     callChartData() {
@@ -46,23 +65,34 @@ class CryptoviewerApp extends React.Component {
                     chartData: getChartData.formattedData
                 }
             })
-        },100)
+        }, 1000)
     }
 
     render() {
         return (
             <div>
-                <div className="flex wrapper">
-                    <div className='chart'>
-                        <CoinChart
-                            chartData={this.state.chartData}
-                        />
+                <div className="flex flex--justify-center wrapper">
+                    <div className="header">
+                        &nbsp;
                     </div>
-                    <div className="change">
-                        <ChangeDisplay
-                            altcoins={this.state.altcoins}
-                            handleGetChart={this.handleGetChart}
-                        />
+                    <div className="left-panel">
+                        &nbsp;
+                    </div>
+                    <div className="center-panel">
+                        <div className='chart'>
+                            <CoinChart
+                                chartData={this.state.chartData}
+                            />
+                        </div>
+                        <div className="change">
+                            <ChangeDisplay
+                                altcoins={this.state.altcoins}
+                                handleGetChart={this.handleGetChart}
+                            />
+                        </div>
+                    </div>
+                    <div className="right-panel">
+                        <TradeHistory trades={this.state.tradeHistory} />
                     </div>
                 </div>
             </div>
@@ -96,6 +126,21 @@ const CoinChart = (props) => {
                 <YAxis type="number" hide={true} domain={['dataMin', 'dataMax']} />
             </LineChart>
         )
+    return <div></div>
+}
+
+const TradeHistory = (props) => {
+    if (props.trades) {
+        return props.trades.map((item) => {
+            return (
+                <div className='trade-history' key={item.id}>
+                    <span className='trade-history__price' key={item.id + "price"}>{item.price + " "}</span>
+                    <span className='trade-history__qty' key={item.id + "qty"}>{item.qty + " "}</span>
+                    <span className='trade-history__time' key={item.id + "time"}>{item.time + " "}</span>
+                </div>
+            )
+        })
+    }
     return <div></div>
 }
 
