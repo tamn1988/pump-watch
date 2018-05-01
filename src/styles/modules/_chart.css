@@ -2,4 +2,12 @@
     margin: 1rem auto;
     height: 300px;
     width: 600px;
+    position: relative;
+
+    &__price{
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+    }
 }

@@ -11,8 +11,8 @@
         flex-direction: column;
         margin: .5rem;
         padding: .5rem;
-        min-width: 100px;
-        width: 20%;
+        min-width: 80px;
+        width: 14%;
         background-color: $mainGreen;
         border: 1px solid $mainPeach;
         box-shadow: .5px .5px .5px black;

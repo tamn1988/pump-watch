@@ -1,3 +1,6 @@
 .center-panel{
     width: 60%;
+    height: 800px;
+    overflow: auto;
+    border-bottom: 1px solid #fff;
 }

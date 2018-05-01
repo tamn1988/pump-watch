@@ -7,6 +7,7 @@ import TradeData from '../scripts/modules/TradeData.js'
 import BookData from '../scripts/modules/BookData.js'
 import { LineChart, Line, XAxis, YAxis } from 'recharts'
 import '../styles/styles.css';
+import { SSL_OP_PKCS1_CHECK_2 } from 'constants';
 
 const dataStream = new HandleData();
 const alert = new Alert();
@@ -21,10 +22,12 @@ class CryptoviewerApp extends React.Component {
         this.populateState = this.populateState.bind(this);
         this.callChartData = this.callChartData.bind(this);
         this.handleGetChart = this.handleGetChart.bind(this);
+        this.initialize = this.initialize.bind(this);
         this.coin;
         this.tradeHistoryTimer;
         this.bookDataTimer;
         this.populateState();
+        this.initialize();
         this.state = {
             pinned: [],
         }
@@ -40,6 +43,26 @@ class CryptoviewerApp extends React.Component {
         }, 400)
     }
 
+    initialize() {
+        this.coin = "BTCUSDT";
+
+        this.tradeHistoryTimer = setInterval(() => {
+            getTradeData.fetchData(this.coin);
+            this.callTradeData();
+        }, 1000)
+
+        this.bookDataTimer = setInterval(() => {
+            getBookData.fetchData(this.coin);
+            this.callBookData();
+        }, 1000)
+
+        setTimeout(() => {
+            getChartData.fetchData(this.coin);
+            this.callChartData();
+        }, 2000)
+
+    }
+
     handleGetChart(e) {
 
         clearInterval(this.tradeHistoryTimer);
@@ -47,24 +70,25 @@ class CryptoviewerApp extends React.Component {
 
         this.coin = e.target.getAttribute('coin-name');
 
-        getChartData.fetchData(this.coin);
-        this.callChartData();
 
         this.tradeHistoryTimer = setInterval(() => {
             getTradeData.fetchData(this.coin);
             this.callTradeData();
         }, 1000)
 
-        this.bookDataTimer = setInterval(()=>{
+        this.bookDataTimer = setInterval(() => {
             getBookData.fetchData(this.coin);
             this.callBookData();
         }, 1000)
 
+        getChartData.fetchData(this.coin);
+        this.callChartData();
+
     }
 
-    callBookData(){
-        setTimeout(()=>{
-            this.setState(()=>{
+    callBookData() {
+        setTimeout(() => {
+            this.setState(() => {
                 return {
                     marketBook: getBookData.dataOut
                 }
@@ -100,21 +124,22 @@ class CryptoviewerApp extends React.Component {
                         &nbsp;
                     </div>
                     <div className="left-panel">
-                    <div className="order-book">
-                        <div className="order-book__ask__container" >
-                        <MarketBookAsks orderBook={this.state.marketBook} />
+                        <div className="order-book">
+                            <div className="order-book__ask__container" >
+                                <MarketBookAsks orderBook={this.state.marketBook} />
+                            </div>
+                            <div className="order-book__median">
+                                <h4>{this.coin}</h4>
+                            </div>
+                            <div className="order-book__bid__container">
+                                <MarketBookBids orderBook={this.state.marketBook} />
+                            </div>
                         </div>
-                        <div className="order-book__median">
-                            <h4>{(this.state.BookData) ? (this.state.BookData.asks[0] + this.state.BookData.bids[0]) / 2 : 'Book Data'}</h4>
-                        </div>
-                        <div className="order-book__bid__container">
-                        <MarketBookBids orderBook={this.state.marketBook} />
-                        </div>
-                    </div>
                     </div>
                     <div className="center-panel">
                         <div className='chart'>
                             <CoinChart
+                                trades={this.state.tradeHistory}
                                 chartData={this.state.chartData}
                             />
                         </div>
@@ -161,12 +186,16 @@ const ChangeDisplay = (props) => {
 const CoinChart = (props) => {
     if (props.chartData)
         return (
-            <LineChart width={600} height={300} data={props.chartData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }} animationDuration={300}>
-                <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
-                <XAxis dataKey="name" hide={true} />
-                <YAxis type="number" hide={true} domain={['dataMin', 'dataMax']} />
-            </LineChart>
+            <div className='chart__container'>
+                <h2 className='chart__price'>{props.trades[0].price}</h2>
+                <LineChart width={600} height={300} data={props.chartData}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }} animationDuration={300}>
+                    <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
+                    <XAxis dataKey="name" hide={true} />
+                    <YAxis type="number" hide={true} domain={['dataMin', 'dataMax']} />
+                </LineChart>
+            </div>
+
         )
     return <div></div>
 }
@@ -186,13 +215,13 @@ const TradeHistory = (props) => {
     return <div></div>
 }
 
-const MarketBookBids = (props)=>{
-    if (props.orderBook){
+const MarketBookBids = (props) => {
+    if (props.orderBook) {
         return props.orderBook.bids.map((item) => {
             return (
-                <div className='order-book__bid'>
-                    <span className='order-book__bid--price'>{item.price + ' '}</span>
-                    <span className='order-book__bid--amount'>{item.amount + ' '}</span>
+                <div key={item.price} className='order-book__bid'>
+                    <span key={item.price + 'price'} className='order-book__bid--price'>{item.price + ' '}</span>
+                    <span key={item.price + 'amount'} className='order-book__bid--amount'>{item.amount + ' '}</span>
                 </div>
             )
         })
@@ -200,13 +229,13 @@ const MarketBookBids = (props)=>{
     return null
 }
 
-const MarketBookAsks = (props)=>{
-    if (props.orderBook){
+const MarketBookAsks = (props) => {
+    if (props.orderBook) {
         return props.orderBook.asks.map((item) => {
             return (
-                <div className='order-book__ask'>
-                    <span className='order-book__ask--price'>{item.price + ' '}</span>
-                    <span className='order-book__ask--amount'>{item.amount + ' '}</span>
+                <div key={item.price} className='order-book__ask'>
+                    <span key={item.price + 'price'} className='order-book__ask--price'>{item.price + ' '}</span>
+                    <span key={item.price + 'amount'} className='order-book__ask--amount'>{item.amount + ' '}</span>
                 </div>
             )
         })
