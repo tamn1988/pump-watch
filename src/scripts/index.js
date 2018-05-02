@@ -7,7 +7,6 @@ import TradeData from '../scripts/modules/TradeData.js'
 import BookData from '../scripts/modules/BookData.js'
 import { LineChart, Line, XAxis, YAxis } from 'recharts'
 import '../styles/styles.css';
-import { SSL_OP_PKCS1_CHECK_2 } from 'constants';
 
 const dataStream = new HandleData();
 const alert = new Alert();
@@ -21,11 +20,12 @@ class CryptoviewerApp extends React.Component {
         super(props);
         this.populateState = this.populateState.bind(this);
         this.callChartData = this.callChartData.bind(this);
-        this.handleGetChart = this.handleGetChart.bind(this);
+        this.handleGetData = this.handleGetData.bind(this);
         this.initialize = this.initialize.bind(this);
         this.coin;
         this.tradeHistoryTimer;
         this.bookDataTimer;
+        this.chartDataTimer;
         this.populateState();
         this.initialize();
         this.state = {
@@ -56,17 +56,18 @@ class CryptoviewerApp extends React.Component {
             this.callBookData();
         }, 1000)
 
-        setTimeout(() => {
+        this.chartDataTimer = setInterval(() => {
             getChartData.fetchData(this.coin);
             this.callChartData();
         }, 2000)
 
     }
 
-    handleGetChart(e) {
+    handleGetData(e) {
 
         clearInterval(this.tradeHistoryTimer);
         clearInterval(this.bookDataTimer);
+        clearInterval(this.chartDataTimer);
 
         this.coin = e.target.getAttribute('coin-name');
 
@@ -81,9 +82,10 @@ class CryptoviewerApp extends React.Component {
             this.callBookData();
         }, 1000)
 
-        getChartData.fetchData(this.coin);
-        this.callChartData();
-
+        this.chartDataTimer = setInterval(() => {
+            getChartData.fetchData(this.coin);
+            this.callChartData();
+        }, 2000)
     }
 
     callBookData() {
@@ -121,7 +123,11 @@ class CryptoviewerApp extends React.Component {
             <div>
                 <div className="flex flex--justify-center wrapper">
                     <div className="header">
-                        &nbsp;
+                        <div className="header__bottom-bar">
+                            <div className='header__bottom-bar--book'>Order Book</div>
+                            <div className='header__bottom-bar--chart'>Price Chart</div>
+                            <div className='header__bottom-bar--history'>Trade History</div>
+                        </div>
                     </div>
                     <div className="left-panel">
                         <div className="order-book">
@@ -129,7 +135,7 @@ class CryptoviewerApp extends React.Component {
                                 <MarketBookAsks orderBook={this.state.marketBook} />
                             </div>
                             <div className="order-book__median">
-                                <h4>{this.coin}</h4>
+                                <p className='order-book__median__info'>{this.coin}</p>
                             </div>
                             <div className="order-book__bid__container">
                                 <MarketBookBids orderBook={this.state.marketBook} />
@@ -146,7 +152,7 @@ class CryptoviewerApp extends React.Component {
                         <div className="change">
                             <ChangeDisplay
                                 altcoins={this.state.altcoins}
-                                handleGetChart={this.handleGetChart}
+                                handleGetData={this.handleGetData}
                             />
                         </div>
                     </div>
@@ -174,7 +180,7 @@ const ChangeDisplay = (props) => {
                 <div className={alert.alertStyle(props.altcoins[key])} key={props.altcoins[key]['s']}>
                     <h4 className='change__title' key={props.altcoins[key]['s'] + 'name'}>{props.altcoins[key]['s']}</h4>
                     <p className='change__price' key={props.altcoins[key]['s'] + 'change'}>{props.altcoins[key]['change'] + "%"}</p>
-                    <a href="#" key={props.altcoins[key]['s'] + 'link'} className='change__link' onClick={props.handleGetChart} coin-name={props.altcoins[key]['s']}></a>
+                    <a href="#" key={props.altcoins[key]['s'] + 'link'} className='change__link' onClick={props.handleGetData} coin-name={props.altcoins[key]['s']}></a>
                 </div>
 
             )
@@ -187,13 +193,15 @@ const CoinChart = (props) => {
     if (props.chartData)
         return (
             <div className='chart__container'>
-                <h2 className='chart__price'>{props.trades[0].price}</h2>
-                <LineChart width={600} height={300} data={props.chartData}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }} animationDuration={300}>
+                <LineChart width={760} height={260} data={props.chartData}
+                    margin={{ top: 10, right: 30, left: 20, bottom: 10 }} animationDuration={300}>
                     <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
                     <XAxis dataKey="name" hide={true} />
                     <YAxis type="number" hide={true} domain={['dataMin', 'dataMax']} />
                 </LineChart>
+                <div className='chart__bottom-bar'>
+                    <h2 className='chart__price'>{props.trades[0].price}</h2>
+                </div>
             </div>
 
         )

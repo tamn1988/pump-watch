@@ -4,4 +4,5 @@
     border: 1px solid #fff;
     padding: 1rem;
     overflow: auto;
+    border-top: none;
 }

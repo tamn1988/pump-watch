@@ -4,6 +4,19 @@
         overflow: auto;
     }
 
+    &__median{
+        background-color: $altBlack;
+        padding: .4rem 1rem;
+        margin: 10px -1rem;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+
+        &__info{
+            margin: 0;
+            font-weight: 600;
+        }
+    }
+
     &__bid__container{
         overflow: auto;
     }

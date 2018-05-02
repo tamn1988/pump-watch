@@ -13,10 +13,10 @@ class Alert {
             // this.alertSound();
             document.title = value.s
             return 'change__container change--alert'
-        } else if (value.change > 0){
+        } else if (value.change > .2){
             return 'change__container'
         } 
-        return 'change__hide'
+        return 'change__container change__hide'
     }
 
 }

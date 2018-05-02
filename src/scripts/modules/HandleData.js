@@ -11,8 +11,8 @@ class HandleData {
         this.getData();
     }
 
-    reset(){
-        setInterval( ()=>{
+    reset() {
+        setInterval(() => {
             this.dataToExport = undefined;
             console.log('reset');
         }, 120000)
@@ -43,7 +43,7 @@ class HandleData {
     filterAndParse(data) {
         return JSON.parse(data.data).filter((altCoin) => {
             //Filter conditions: Only btc pairs with greater than 1k volume, and current price is higher than yesterdays closing price
-            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000 && (altCoin.c > altCoin.x)
+            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000
         })
     }
 
@@ -53,12 +53,7 @@ class HandleData {
                 this.dataToExport[altCoin.s] = altCoin;
             };
             let percentChange = this.roundToTwo((((altCoin.c - this.dataToExport[altCoin.s]['c']) / this.dataToExport[altCoin.s]['c']) * 100), 2)
-                if (percentChange >= 0){
-                    this.dataToExport[altCoin.s]['change'] = percentChange;
-                } else {
-                    delete this.dataToExport[altCoin.s];
-                }
-
+            this.dataToExport[altCoin.s]['change'] = percentChange;
         })
     }
 

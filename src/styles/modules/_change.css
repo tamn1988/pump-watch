@@ -4,13 +4,14 @@
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
+    /* margin-top: 1rem; */
 
 
     &__container{
         display: flex;
         flex-direction: column;
-        margin: .5rem;
-        padding: .5rem;
+        margin: .2rem;
+        padding: .2rem;
         min-width: 80px;
         width: 14%;
         background-color: $mainGreen;
@@ -41,11 +42,11 @@
     }
 
     &--alert{
-        background-color: rgb(245, 75, 75);
-        order: -1;
+        background-color: rgb(228, 54, 62);
     }
 
     &__hide{
-        display: none;
+        opacity: .2;
+        background-color: gray;
     }
 }
