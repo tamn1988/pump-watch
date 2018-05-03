@@ -9,11 +9,15 @@ import { LineChart, Line, XAxis, YAxis } from 'recharts'
 import '../styles/styles.css';
 
 const dataStream = new HandleData();
-const alert = new Alert();
+const alertHandle = new Alert();
 const app = document.getElementById('app');
 const getChartData = new ChartData();
 const getTradeData = new TradeData();
 const getBookData = new BookData();
+
+if (/Mobi/.test(navigator.userAgent)) {
+    alert('This app is in beta, and currently only supports desktop browsers');
+}
 
 class CryptoviewerApp extends React.Component {
     constructor(props) {
@@ -30,7 +34,7 @@ class CryptoviewerApp extends React.Component {
         this.populateState();
         this.initialize();
         this.state = {
-            pinned: [],
+
         }
     }
 
@@ -39,6 +43,7 @@ class CryptoviewerApp extends React.Component {
             this.setState(() => {
                 return {
                     altcoins: dataStream.dataToExport,
+                    pinned: alertHandle.pinned
                 }
             })
         }, 400)
@@ -184,16 +189,35 @@ class CryptoviewerApp extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="alert-ticker">
+                    <div className="alert-ticker__container">
+                        <div className="alert-ticker__slide">
+                            <span className="alert-ticker__title">ALERTS: <AlertTicker pinned={this.state.pinned} /></span>
+                        </div>
+                    </div>
+                    <div className="footer">
+                        Copyright Tam Nguyen 2018
+                    </div>
+                </div>
             </div>
         )
     }
+}
+
+const AlertTicker = (props) => {
+    if (props.pinned) {
+        return props.pinned.map((item) => {
+            return <span id={item + 'ticker'} className='alert-ticker__item'>{item + " "}</span>
+        })
+    }
+    return null
 }
 
 const ChangeDisplay = (props) => {
     if (props.altcoins) {
         return Object.keys(props.altcoins).map((key, i) => {
             return (
-                <div className={alert.alertStyle(props.altcoins[key])} key={props.altcoins[key]['s']}>
+                <div className={alertHandle.alertStyle(props.altcoins[key])} key={props.altcoins[key]['s']}>
                     <h4 className='change__title' key={props.altcoins[key]['s'] + 'name'}>{props.altcoins[key]['s']}</h4>
                     <p className='change__price' key={props.altcoins[key]['s'] + 'change'}>{props.altcoins[key]['change'] + "%"}</p>
                     <a href="#" key={props.altcoins[key]['s'] + 'link'} className='change__link' onClick={props.handleGetData} coin-name={props.altcoins[key]['s']}></a>
@@ -221,7 +245,7 @@ const CoinChart = (props) => {
             </div>
 
         )
-    return <div></div>
+    return <div>Waiting on Binance API...</div>
 }
 
 const BtcTicker = (props) => {
@@ -230,7 +254,7 @@ const BtcTicker = (props) => {
             <p className='header__btc-ticker'>BTC Price: {Math.round(props.altcoins.BTCUSDT.current) + " USDT"}</p>
         )
     }
-    return null
+    return <div>Waiting on Binance API...</div>
 }
 
 const TradeHistory = (props) => {
@@ -245,7 +269,7 @@ const TradeHistory = (props) => {
             )
         })
     }
-    return <div></div>
+    return <div>Waiting on Binance API...</div>
 }
 
 const MarketBookBids = (props) => {
@@ -259,7 +283,7 @@ const MarketBookBids = (props) => {
             )
         })
     }
-    return null
+    return <div>Waiting on Binance API...</div>
 }
 
 const MarketBookAsks = (props) => {
@@ -273,7 +297,7 @@ const MarketBookAsks = (props) => {
             )
         })
     }
-    return null
+    return <div>Waiting on Binance API...</div>
 }
 
 ReactDOM.render(<CryptoviewerApp />, app)

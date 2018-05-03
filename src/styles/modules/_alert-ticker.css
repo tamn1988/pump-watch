@@ -1,0 +1,39 @@
+.alert-ticker{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: $altBlack;
+
+    &__container{
+        width:840px;
+        margin: 0 auto;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    &__slide{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        animation: slide 10s linear infinite;
+    }
+
+    &__title{
+        font-size: 1.2rem;
+        color:#fff;
+    }
+
+    &__item{
+        color: #9ff161;
+    }
+}
+
+
+
+@keyframes slide{
+    0%{transform: translateX(100%)}
+    100%{transform: translateX(-100%)}
+}
