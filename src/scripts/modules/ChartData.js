@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 class ChartData {
     constructor(){
         this.formattedData;
@@ -18,9 +16,20 @@ class ChartData {
 
     fetchData(coin){
         let apiLink = 'https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v1/klines?symbol=' + coin + '&interval=15m&limit=500';
-        $.getJSON(apiLink, ((data)=>{
-            this.convertData(data)
-        }))
+        fetch(apiLink)
+            .then((response)=>{
+                if (!response.ok){
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((response)=>{
+                this.dataOut=[];
+                this.convertData(response);
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
     }
 }
 

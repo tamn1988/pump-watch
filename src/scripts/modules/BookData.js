@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 class BookData {
     constructor() {
         this.dataOut = {
@@ -29,13 +27,23 @@ class BookData {
 
     fetchData(coin) {
         let apiLink = 'https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v1/depth?symbol=' + coin + '&limit=20';
-        $.getJSON(apiLink, ((data) => {
-            this.dataOut = {
+        fetch(apiLink)
+        .then((response)=>{
+            if (!response.ok){
+                throw Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then((response)=>{
+            this.dataOut= {
                 asks: [],
                 bids: []
-            };
-            this.convertData(data);
-        }))
+            }
+            this.convertData(response);
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
     }
 
     roundToTwo(num, places) {

@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 class TradeData {
     constructor() {
         this.dataOut = [];
@@ -22,10 +20,20 @@ class TradeData {
 
     fetchData(coin) {
         let apiLink = 'https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v1/trades?symbol=' + coin + '&limit=35';
-        $.getJSON(apiLink, ((data) => {
-            this.dataOut = [];
-            this.convertData(data);
-        }))
+        fetch(apiLink)
+            .then((response)=>{
+                if (!response.ok){
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((response)=>{
+                this.dataOut=[];
+                this.convertData(response);
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
     }
 
     roundToTwo(num, places) {
@@ -35,4 +43,3 @@ class TradeData {
 }
 
 export default TradeData
-

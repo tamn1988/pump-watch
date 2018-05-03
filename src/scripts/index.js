@@ -132,7 +132,7 @@ class CryptoviewerApp extends React.Component {
                         <div className="header__top-bar">
                             <div className="header--logo__container">
                                 <div className='header--logo-top'>Pump</div>
-                                <div className="header--logo-bottom">Watch &#8599;</div>
+                                <div className="header--logo-bottom">Watch&#8599;</div>
                             </div>
                             <div className="header__btc-ticker">
                                 <BtcTicker altcoins={this.state.altcoins} />
