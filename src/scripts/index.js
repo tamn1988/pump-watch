@@ -22,6 +22,7 @@ class CryptoviewerApp extends React.Component {
         this.callChartData = this.callChartData.bind(this);
         this.handleGetData = this.handleGetData.bind(this);
         this.initialize = this.initialize.bind(this);
+        this.roundToTwo = this.roundToTwo.bind(this);
         this.coin;
         this.tradeHistoryTimer;
         this.bookDataTimer;
@@ -118,16 +119,32 @@ class CryptoviewerApp extends React.Component {
         }, 1000)
     }
 
+    roundToTwo(num, places) {
+        let multiplier = Math.pow(10, places);
+        return Math.round(num * multiplier) / multiplier;
+    }
+
     render() {
         return (
             <div>
-                <div className="flex flex--justify-center wrapper">
-                    <div className="header">
-                        <div className="header__bottom-bar">
-                            <div className='header__bottom-bar--book'>Order Book</div>
-                            <div className='header__bottom-bar--chart'>Price Chart</div>
-                            <div className='header__bottom-bar--history'>Trade History</div>
+                <div className="header">
+                    <div className="wrapper">
+                        <div className="header__top-bar">
+                            <div className="header--logo__container">
+                                <div className='header--logo-top'>Pump</div>
+                                <div className="header--logo-bottom">Watch &#8599;</div>
+                            </div>
+                            <div className="header__btc-ticker">
+                                <BtcTicker altcoins={this.state.altcoins} />
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div className="flex flex--justify-center wrapper">
+                    <div className="header__bottom-bar wrapper">
+                        <div className='header__bottom-bar--book'>Order Book</div>
+                        <div className='header__bottom-bar--chart'>Price Chart</div>
+                        <div className='header__bottom-bar--history'>Trade History</div>
                     </div>
                     <div className="left-panel">
                         <div className="order-book">
@@ -165,7 +182,6 @@ class CryptoviewerApp extends React.Component {
                         <div className="trade-history__container">
                             <TradeHistory trades={this.state.tradeHistory} />
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -193,11 +209,11 @@ const CoinChart = (props) => {
     if (props.chartData)
         return (
             <div className='chart__container'>
-                <LineChart width={760} height={260} data={props.chartData}
+                <LineChart width={840} height={260} data={props.chartData}
                     margin={{ top: 10, right: 30, left: 20, bottom: 10 }} animationDuration={300}>
                     <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
                     <XAxis dataKey="name" hide={true} />
-                    <YAxis type="number" hide={true} domain={['dataMin', 'dataMax']} />
+                    <YAxis type="number" padding={{ right: 20 }} tick={{ fontSize: ".8rem" }} axisLine={false} width={60} orientation='right' domain={['dataMin', 'dataMax']} />
                 </LineChart>
                 <div className='chart__bottom-bar'>
                     <h2 className='chart__price'>{props.trades[0].price}</h2>
@@ -208,14 +224,23 @@ const CoinChart = (props) => {
     return <div></div>
 }
 
+const BtcTicker = (props) => {
+    if (props.altcoins) {
+        return (
+            <p className='header__btc-ticker'>BTC Price: {Math.round(props.altcoins.BTCUSDT.current) + " USDT"}</p>
+        )
+    }
+    return null
+}
+
 const TradeHistory = (props) => {
     if (props.trades) {
         return props.trades.map((item) => {
             return (
                 <div className='trade-history' key={item.id}>
-                    <span className='trade-history__price' key={item.id + "price"}>{item.price + " "}</span>
-                    <span className='trade-history__qty' key={item.id + "qty"}>{item.qty + " "}</span>
-                    <span className='trade-history__time' key={item.id + "time"}>{item.time + " "}</span>
+                    <div className='trade-history__price' key={item.id + "price"}>{item.price + " "}</div>
+                    <div className='trade-history__qty' key={item.id + "qty"}>{item.qty + " "}</div>
+                    <div className='trade-history__time' key={item.id + "time"}>{item.time + " "}</div>
                 </div>
             )
         })

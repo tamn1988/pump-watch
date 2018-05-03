@@ -4,7 +4,6 @@
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    /* margin-top: 1rem; */
 
 
     &__container{
@@ -15,9 +14,7 @@
         min-width: 80px;
         width: 14%;
         background-color: $mainGreen;
-        border: 1px solid $mainPeach;
-        box-shadow: .5px .5px .5px black;
-        box-sizing: border-box;
+        border: 1px solid $altBlack;
         position: relative;
     }
 

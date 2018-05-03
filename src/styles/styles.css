@@ -11,8 +11,5 @@
 @import 'modules/_trade-history.css';
 @import 'modules/_order-book.css';
 
-#app{
-    margin: 0 auto;
-    max-width: 1300px;
-}
+
 

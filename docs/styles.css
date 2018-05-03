@@ -6,14 +6,12 @@ body{
     background-color: #36384c;
     color: #fff;
     font-family: 'Lato', sans-serif;
-
+    margin: 0;
 }
 
 .wrapper{
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
     max-width: 1400px;
 }
 
@@ -34,8 +32,6 @@ body{
     width: 100%;
 }
 
-/* margin-top: 1rem; */
-
 .change__container{
         display: flex;
         flex-direction: column;
@@ -44,9 +40,7 @@ body{
         min-width: 80px;
         width: 14%;
         background-color: #849974;
-        border: 1px solid #e3bab3;
-        box-shadow: .5px .5px .5px black;
-        box-sizing: border-box;
+        border: 1px solid #2f313f;
         position: relative;
     }
 
@@ -80,7 +74,7 @@ body{
     }
 
 .chart{
-    width: 760px;
+    width: 840px;
     height: 300px;
 }
 
@@ -123,10 +117,39 @@ body{
 }
 
 .header{
-    display: flex;
-    height: 70px;
-    width: 100%;
+    background-color: rgb(37, 39, 59);
 }
+
+.header--logo__container{
+        width: 20%;
+        position: relative;
+    }
+
+.header--logo-top{
+        color: rgb(248, 39, 39);
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        padding: 1rem;
+    }
+
+.header--logo-bottom{
+        position: absolute;
+        top: 25px;
+        left: 72px;
+        color: #60bb60;
+        font-size: 1.4rem;
+    }
+
+.header__top-bar {
+        display: flex;
+    }
+
+.header__btc-ticker{
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        color: #00d5ff;
+    }
 
 .header__bottom-bar{
         display: flex;
@@ -181,15 +204,26 @@ body{
     }
 
 .trade-history__price{
-        color: #849974;
+        color: rgb(206, 206, 95);
+        width: 40%;
+        text-align: left;
     }
 
 .trade-history__qty{
-        color: #e3bab3;
+        color: #fff;
+        width: 40%;
+        text-align: left;
+        font-size: 16px;
+
+
     }
 
 .trade-history__time{
         color: rgb(173, 172, 172);
+        width: 20%;
+        text-align: right;
+        font-size: .7rem;
+
     }
 
 .order-book__ask__container{
@@ -239,8 +273,5 @@ body{
         color: gray;
     }
 
-#app{
-    margin: 0 auto;
-    max-width: 1300px;
-}
+
 

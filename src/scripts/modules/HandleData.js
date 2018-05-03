@@ -54,6 +54,7 @@ class HandleData {
             };
             let percentChange = this.roundToTwo((((altCoin.c - this.dataToExport[altCoin.s]['c']) / this.dataToExport[altCoin.s]['c']) * 100), 2)
             this.dataToExport[altCoin.s]['change'] = percentChange;
+            this.dataToExport[altCoin.s]['current'] = altCoin.c;
         })
     }
 

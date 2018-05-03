@@ -1,7 +1,36 @@
 .header{
-    display: flex;
-    height: 70px;
-    width: 100%;
+    background-color: rgb(37, 39, 59);
+
+    &--logo__container{
+        width: 20%;
+        position: relative;
+    }
+
+    &--logo-top{
+        color: rgb(248, 39, 39);
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        padding: 1rem;
+    }
+
+    &--logo-bottom{
+        position: absolute;
+        top: 25px;
+        left: 72px;
+        color: #60bb60;
+        font-size: 1.4rem;
+    }
+
+    &__top-bar {
+        display: flex;
+    }
+
+    &__btc-ticker{
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        color: #00d5ff;
+    }
 
     &__bottom-bar{
         display: flex;
