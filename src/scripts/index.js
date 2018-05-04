@@ -24,13 +24,12 @@ class CryptoviewerApp extends React.Component {
         super(props);
         this.populateState = this.populateState.bind(this);
         this.callChartData = this.callChartData.bind(this);
+        this.getData = this.getData.bind(this);
         this.handleGetData = this.handleGetData.bind(this);
         this.initialize = this.initialize.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.coin;
-        this.tradeHistoryTimer;
-        this.bookDataTimer;
-        this.chartDataTimer;
+        this.altCoinRestData;
         this.populateState();
         this.initialize();
         this.state = {
@@ -50,49 +49,39 @@ class CryptoviewerApp extends React.Component {
     }
 
     initialize() {
-        this.coin = "BTCUSDT";
+        this.getData("BTCUSDT");
 
-        this.tradeHistoryTimer = setInterval(() => {
-            getTradeData.fetchData(this.coin);
-            this.callTradeData();
-        }, 1000)
-
-        this.bookDataTimer = setInterval(() => {
-            getBookData.fetchData(this.coin);
-            this.callBookData();
-        }, 1000)
-
-        this.chartDataTimer = setInterval(() => {
-            getChartData.fetchData(this.coin);
-            this.callChartData();
-        }, 2000)
 
     }
 
     handleGetData(e) {
-
-        clearInterval(this.tradeHistoryTimer);
-        clearInterval(this.bookDataTimer);
-        clearInterval(this.chartDataTimer);
-
+        clearInterval(this.altCoinRestData);
         this.coin = e.target.getAttribute('coin-name');
+        this.getData(this.coin);
 
-
-        this.tradeHistoryTimer = setInterval(() => {
-            getTradeData.fetchData(this.coin);
-            this.callTradeData();
-        }, 1000)
-
-        this.bookDataTimer = setInterval(() => {
-            getBookData.fetchData(this.coin);
-            this.callBookData();
-        }, 1000)
-
-        this.chartDataTimer = setInterval(() => {
-            getChartData.fetchData(this.coin);
-            this.callChartData();
-        }, 2000)
     }
+
+    getData(coin) {
+        setTimeout(() => {
+            getTradeData.fetchData(coin);
+            this.callTradeData();
+            getBookData.fetchData(coin);
+            this.callBookData();
+            getChartData.fetchData(coin);
+            this.callChartData();
+        }, 1000)
+
+
+        this.altCoinRestData = setInterval(() => {
+            getTradeData.fetchData(coin);
+            this.callTradeData();
+            getBookData.fetchData(coin);
+            this.callBookData();
+            getChartData.fetchData(coin);
+            this.callChartData();
+        }, 3000)
+    }
+
 
     callBookData() {
         setTimeout(() => {
@@ -192,7 +181,8 @@ class CryptoviewerApp extends React.Component {
                 <div className="alert-ticker">
                     <div className="alert-ticker__container">
                         <div className="alert-ticker__slide">
-                            <span className="alert-ticker__title">ALERTS: <AlertTicker pinned={this.state.pinned} /></span>
+                            <span className="alert-ticker__title">ALERTS: <AlertTicker handleGetData={this.handleGetData}
+                                pinned={this.state.pinned} /></span>
                         </div>
                     </div>
                     <div className="footer">
@@ -207,7 +197,7 @@ class CryptoviewerApp extends React.Component {
 const AlertTicker = (props) => {
     if (props.pinned) {
         return props.pinned.map((item) => {
-            return <span id={item + 'ticker'} className='alert-ticker__item'>{item + " "}</span>
+            return <a href="#" key={item + 'ticker'} className='alert-ticker__item' coin-name={item} onClick={props.handleGetData}>{item + " "}</a>
         })
     }
     return null
