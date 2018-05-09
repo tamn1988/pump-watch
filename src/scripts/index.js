@@ -5,7 +5,13 @@ import Alert from '../scripts/modules/AlertToggle.js'
 import ChartData from '../scripts/modules/ChartData.js'
 import TradeData from '../scripts/modules/TradeData.js'
 import BookData from '../scripts/modules/BookData.js'
-import { LineChart, Line, XAxis, YAxis } from 'recharts'
+import MarketBookAsks from '../scripts/modules/components/MarketBookAsks'
+import MarketBookBids from '../scripts/modules/components/MarketBookBids'
+import TradeHistory from '../scripts/modules/components/TradeHistory'
+import CoinChart from '../scripts/modules/components/CoinChart'
+import AlertTicker from '../scripts/modules/components/AlertTicker'
+import BtcTicker from '../scripts/modules/components/BtcTicker'
+import ChangeDisplay from '../scripts/modules/components/ChangeDisplay'
 import '../styles/styles.css';
 
 const dataStream = new HandleData();
@@ -27,6 +33,7 @@ class CryptoviewerApp extends React.Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.setStateRestAPI = this.setStateRestAPI.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
+        this.alertHandle = alertHandle;
         this.coin;
         this.altCoinRestInterval;
         this.state = {
@@ -149,6 +156,7 @@ class CryptoviewerApp extends React.Component {
                             <ChangeDisplay
                                 altcoins={this.state.altcoins}
                                 handleGetData={this.handleGetData}
+                                alertHandle={this.alertHandle}
                             />
                         </div>
                     </div>
@@ -176,146 +184,6 @@ class CryptoviewerApp extends React.Component {
                 </div>
             </div>
         )
-    }
-}
-
-const AlertTicker = (props) => {
-    if (props.pinned) {
-        return props.pinned.map((item) => {
-            return <a href="#" key={item + 'ticker'} className='alert-ticker__item' coin-name={item} onClick={props.handleGetData}>{item + " "}</a>
-        })
-    }
-    return null
-}
-
-const ChangeDisplay = (props) => {
-    if (props.altcoins) {
-        return Object.keys(props.altcoins).map((key, i) => {
-            return (
-                <div className={alertHandle.alertStyle(props.altcoins[key])} key={props.altcoins[key]['s']}>
-                    <h4 className='change__title' key={props.altcoins[key]['s'] + 'name'}>{props.altcoins[key]['s']}</h4>
-                    <p className='change__price' key={props.altcoins[key]['s'] + 'change'}>{props.altcoins[key]['change'] + "%"}</p>
-                    <a href="#" key={props.altcoins[key]['s'] + 'link'} className='change__link' onClick={props.handleGetData} coin-name={props.altcoins[key]['s']}></a>
-                </div>
-
-            )
-        })
-    }
-    return <div>Connecting...</div>
-}
-
-class CoinChart extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.chartData !== this.props.chartData
-    }
-
-    render() {
-        if (this.props.chartData) {
-            return (
-                <div className='chart__container'>
-                    <LineChart width={840} height={260} data={this.props.chartData}
-                        margin={{ top: 10, right: 30, left: 20, bottom: 10 }} animationDuration={300}>
-                        <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
-                        <XAxis dataKey="name" hide={true} />
-                        <YAxis type="number" padding={{ right: 20 }} tick={{ fontSize: ".8rem" }} axisLine={false} width={60} orientation='right' domain={['dataMin', 'dataMax']} />
-                    </LineChart>
-                    <div className='chart__bottom-bar'>
-                        <h2 className='chart__price'>{this.props.trades[0].price}</h2>
-                    </div>
-                </div>
-
-            )
-        }
-        return <div>Waiting on Binance API...</div>
-
-    }
-}
-
-const BtcTicker = (props) => {
-    if (props.altcoins) {
-        return (
-            <p className='header__btc-ticker'>BTC Price: {Math.round(props.altcoins.BTCUSDT.current) + " USDT"}</p>
-        )
-    }
-    return <div>Waiting on Binance API...</div>
-}
-
-
-class TradeHistory extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.trades !== this.props.trades
-    }
-    render() {
-        if (this.props.trades) {
-            return this.props.trades.map((item) => {
-                return (
-                    <div className='trade-history' key={item.id}>
-                        <div className='trade-history__price' key={item.id + "price"}>{item.price + " "}</div>
-                        <div className='trade-history__qty' key={item.id + "qty"}>{item.qty + " "}</div>
-                        <div className='trade-history__time' key={item.id + "time"}>{item.time + " "}</div>
-                    </div>
-                )
-            })
-        }
-        return <div>Waiting on Binance API...</div>
-    }
-
-}
-
-class MarketBookBids extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.orderBook !== this.props.orderBook
-    }
-
-    render() {
-        if (this.props.orderBook) {
-            return this.props.orderBook.bids.map((item) => {
-                return (
-                    <div key={item.price} className='order-book__bid'>
-                        <span key={item.price + 'price'} className='order-book__bid--price'>{item.price + ' '}</span>
-                        <span key={item.price + 'amount'} className='order-book__bid--amount'>{item.amount + ' '}</span>
-                    </div>
-                )
-            })
-        }
-        return <div>Waiting on Binance API...</div>
-    }
-
-}
-
-class MarketBookAsks extends React.Component{
-    constructor(props){
-        super(props)
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.orderBook !== this.props.orderBook
-    }  
-
-    render(){
-        if (this.props.orderBook) {
-            return this.props.orderBook.asks.map((item) => {
-                return (
-                    <div key={item.price} className='order-book__ask'>
-                        <span key={item.price + 'price'} className='order-book__ask--price'>{item.price + ' '}</span>
-                        <span key={item.price + 'amount'} className='order-book__ask--amount'>{item.amount + ' '}</span>
-                    </div>
-                )
-            })
-        }
-        return <div>Waiting on Binance API...</div>
     }
 }
 
