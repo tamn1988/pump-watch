@@ -30,20 +30,18 @@ class HandleData {
     }
 
     convertArrayToObj(array) {
-
         const arrayToObject = (array) =>
             array.reduce((obj, item) => {
                 obj[item.s] = item
                 return obj
             }, {})
-
         return arrayToObject(array);
     }
 
     filterAndParse(data) {
         return JSON.parse(data.data).filter((altCoin) => {
-            //Filter conditions: Only btc pairs with greater than 1k volume, and current price is higher than yesterdays closing price
-            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000
+            //Filter conditions: Only btc pairs with greater than 1k volume
+            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000;
         })
     }
 

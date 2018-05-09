@@ -23,17 +23,14 @@ class CryptoviewerApp extends React.Component {
     constructor(props) {
         super(props);
         this.populateState = this.populateState.bind(this);
-        this.callChartData = this.callChartData.bind(this);
-        this.getData = this.getData.bind(this);
+        this.getRestAPIData = this.getRestAPIData.bind(this);
         this.handleGetData = this.handleGetData.bind(this);
-        this.initialize = this.initialize.bind(this);
+        this.setStateRestAPI = this.setStateRestAPI.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.coin;
-        this.altCoinRestData;
-        this.populateState();
-        this.initialize();
+        this.altCoinRestInterval;
         this.state = {
-
+            currentCoin: 'BTCUSDT'
         }
     }
 
@@ -48,69 +45,57 @@ class CryptoviewerApp extends React.Component {
         }, 400)
     }
 
-    initialize() {
-        this.getData("BTCUSDT");
-
-
-    }
-
     handleGetData(e) {
-        clearInterval(this.altCoinRestData);
-        this.coin = e.target.getAttribute('coin-name');
-        this.getData(this.coin);
-
+        clearInterval(this.altCoinRestInterval);
+        let coin = e.target.getAttribute('coin-name');
+        this.setState(() => {
+            return {
+                currentCoin: coin
+            }
+        })
     }
 
-    getData(coin) {
+    componentDidMount() {
+        this.populateState();
+        this.getRestAPIData(this.state.currentCoin)
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.currentCoin !== this.state.currentCoin) {
+            this.getRestAPIData(this.state.currentCoin)
+        }
+    }
+
+
+
+    getRestAPIData(coin) {
         setTimeout(() => {
             getTradeData.fetchData(coin);
-            this.callTradeData();
             getBookData.fetchData(coin);
-            this.callBookData();
             getChartData.fetchData(coin);
-            this.callChartData();
+            this.setStateRestAPI();
         }, 1000)
 
 
-        this.altCoinRestData = setInterval(() => {
+        this.altCoinRestInterval = setInterval(() => {
             getTradeData.fetchData(coin);
-            this.callTradeData();
             getBookData.fetchData(coin);
-            this.callBookData();
             getChartData.fetchData(coin);
-            this.callChartData();
+            this.setStateRestAPI();
         }, 3000)
     }
 
 
-    callBookData() {
+    setStateRestAPI() {
         setTimeout(() => {
             this.setState(() => {
                 return {
-                    marketBook: getBookData.dataOut
-                }
-            })
-        }, 1000)
-    }
-
-    callTradeData() {
-        setTimeout(() => {
-            this.setState(() => {
-                return {
-                    tradeHistory: getTradeData.dataOut
-                }
-            })
-        }, 1000)
-    }
-
-    callChartData() {
-        setTimeout(() => {
-            this.setState(() => {
-                return {
+                    marketBook: getBookData.dataOut,
+                    tradeHistory: getTradeData.dataOut,
                     chartData: getChartData.formattedData
                 }
             })
-        }, 1000)
+        }, 0)
     }
 
     roundToTwo(num, places) {
@@ -146,7 +131,7 @@ class CryptoviewerApp extends React.Component {
                                 <MarketBookAsks orderBook={this.state.marketBook} />
                             </div>
                             <div className="order-book__median">
-                                <p className='order-book__median__info'>{this.coin}</p>
+                                <p className='order-book__median__info'>{this.state.currentCoin}</p>
                             </div>
                             <div className="order-book__bid__container">
                                 <MarketBookBids orderBook={this.state.marketBook} />
@@ -219,23 +204,35 @@ const ChangeDisplay = (props) => {
     return <div>Connecting...</div>
 }
 
-const CoinChart = (props) => {
-    if (props.chartData)
-        return (
-            <div className='chart__container'>
-                <LineChart width={840} height={260} data={props.chartData}
-                    margin={{ top: 10, right: 30, left: 20, bottom: 10 }} animationDuration={300}>
-                    <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
-                    <XAxis dataKey="name" hide={true} />
-                    <YAxis type="number" padding={{ right: 20 }} tick={{ fontSize: ".8rem" }} axisLine={false} width={60} orientation='right' domain={['dataMin', 'dataMax']} />
-                </LineChart>
-                <div className='chart__bottom-bar'>
-                    <h2 className='chart__price'>{props.trades[0].price}</h2>
-                </div>
-            </div>
+class CoinChart extends React.Component {
+    constructor(props) {
+        super(props)
+    }
 
-        )
-    return <div>Waiting on Binance API...</div>
+    shouldComponentUpdate(nextProps) {
+        return nextProps.chartData !== this.props.chartData
+    }
+
+    render() {
+        if (this.props.chartData) {
+            return (
+                <div className='chart__container'>
+                    <LineChart width={840} height={260} data={this.props.chartData}
+                        margin={{ top: 10, right: 30, left: 20, bottom: 10 }} animationDuration={300}>
+                        <Line type="monotone" dataKey="close" stroke="#9ad76b" strokeWidth={2} dot={false} />
+                        <XAxis dataKey="name" hide={true} />
+                        <YAxis type="number" padding={{ right: 20 }} tick={{ fontSize: ".8rem" }} axisLine={false} width={60} orientation='right' domain={['dataMin', 'dataMax']} />
+                    </LineChart>
+                    <div className='chart__bottom-bar'>
+                        <h2 className='chart__price'>{this.props.trades[0].price}</h2>
+                    </div>
+                </div>
+
+            )
+        }
+        return <div>Waiting on Binance API...</div>
+
+    }
 }
 
 const BtcTicker = (props) => {
@@ -247,47 +244,79 @@ const BtcTicker = (props) => {
     return <div>Waiting on Binance API...</div>
 }
 
-const TradeHistory = (props) => {
-    if (props.trades) {
-        return props.trades.map((item) => {
-            return (
-                <div className='trade-history' key={item.id}>
-                    <div className='trade-history__price' key={item.id + "price"}>{item.price + " "}</div>
-                    <div className='trade-history__qty' key={item.id + "qty"}>{item.qty + " "}</div>
-                    <div className='trade-history__time' key={item.id + "time"}>{item.time + " "}</div>
-                </div>
-            )
-        })
+
+class TradeHistory extends React.Component {
+    constructor(props) {
+        super(props)
     }
-    return <div>Waiting on Binance API...</div>
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.trades !== this.props.trades
+    }
+    render() {
+        if (this.props.trades) {
+            return this.props.trades.map((item) => {
+                return (
+                    <div className='trade-history' key={item.id}>
+                        <div className='trade-history__price' key={item.id + "price"}>{item.price + " "}</div>
+                        <div className='trade-history__qty' key={item.id + "qty"}>{item.qty + " "}</div>
+                        <div className='trade-history__time' key={item.id + "time"}>{item.time + " "}</div>
+                    </div>
+                )
+            })
+        }
+        return <div>Waiting on Binance API...</div>
+    }
+
 }
 
-const MarketBookBids = (props) => {
-    if (props.orderBook) {
-        return props.orderBook.bids.map((item) => {
-            return (
-                <div key={item.price} className='order-book__bid'>
-                    <span key={item.price + 'price'} className='order-book__bid--price'>{item.price + ' '}</span>
-                    <span key={item.price + 'amount'} className='order-book__bid--amount'>{item.amount + ' '}</span>
-                </div>
-            )
-        })
+class MarketBookBids extends React.Component {
+    constructor(props) {
+        super(props)
     }
-    return <div>Waiting on Binance API...</div>
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.orderBook !== this.props.orderBook
+    }
+
+    render() {
+        if (this.props.orderBook) {
+            return this.props.orderBook.bids.map((item) => {
+                return (
+                    <div key={item.price} className='order-book__bid'>
+                        <span key={item.price + 'price'} className='order-book__bid--price'>{item.price + ' '}</span>
+                        <span key={item.price + 'amount'} className='order-book__bid--amount'>{item.amount + ' '}</span>
+                    </div>
+                )
+            })
+        }
+        return <div>Waiting on Binance API...</div>
+    }
+
 }
 
-const MarketBookAsks = (props) => {
-    if (props.orderBook) {
-        return props.orderBook.asks.map((item) => {
-            return (
-                <div key={item.price} className='order-book__ask'>
-                    <span key={item.price + 'price'} className='order-book__ask--price'>{item.price + ' '}</span>
-                    <span key={item.price + 'amount'} className='order-book__ask--amount'>{item.amount + ' '}</span>
-                </div>
-            )
-        })
+class MarketBookAsks extends React.Component{
+    constructor(props){
+        super(props)
     }
-    return <div>Waiting on Binance API...</div>
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.orderBook !== this.props.orderBook
+    }  
+
+    render(){
+        if (this.props.orderBook) {
+            return this.props.orderBook.asks.map((item) => {
+                return (
+                    <div key={item.price} className='order-book__ask'>
+                        <span key={item.price + 'price'} className='order-book__ask--price'>{item.price + ' '}</span>
+                        <span key={item.price + 'amount'} className='order-book__ask--amount'>{item.amount + ' '}</span>
+                    </div>
+                )
+            })
+        }
+        return <div>Waiting on Binance API...</div>
+    }
 }
 
 ReactDOM.render(<CryptoviewerApp />, app)
