@@ -127,12 +127,10 @@ class CryptoviewerApp extends React.Component {
                     </div>
                 </div>
                 <div className="flex flex--justify-center wrapper">
-                    <div className="header__bottom-bar wrapper">
-                        <div className='header__bottom-bar--book'>Order Book</div>
-                        <div className='header__bottom-bar--chart'>Price Chart</div>
-                        <div className='header__bottom-bar--history'>Trade History</div>
-                    </div>
                     <div className="left-panel">
+                        <div className="left-panel__title">
+                            Order Book
+                        </div>
                         <div className="order-book">
                             <div className="order-book__ask__container" >
                                 <MarketBookAsks orderBook={this.state.marketBook} />
@@ -146,6 +144,9 @@ class CryptoviewerApp extends React.Component {
                         </div>
                     </div>
                     <div className="center-panel">
+                        <div className="center-panel__title">
+                            Price Chart
+                    </div>
                         <div className='chart'>
                             <CoinChart
                                 trades={this.state.tradeHistory}
@@ -161,6 +162,9 @@ class CryptoviewerApp extends React.Component {
                         </div>
                     </div>
                     <div className="right-panel">
+                        <div className="right-panel__title">
+                            Trade
+                    </div>
                         <div className='trade-history__bar'>
                             <span>Price</span>
                             <span>Amount</span>

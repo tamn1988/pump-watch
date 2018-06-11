@@ -64,3 +64,9 @@ class HandleData {
 
 export default HandleData
 
+// const socket = new WebSocket('wss://stream.binance.com:9443/stream?streams=!ticker@arr/bnbbtc@trade/bnbbtc@depth20/bnbbtc@kline_15m');
+                             
+// socket.addEventListener('message', (({data})=>{
+//   let parsedData = JSON.parse(data);
+//   console.log(parsedData.stream)
+// }))
