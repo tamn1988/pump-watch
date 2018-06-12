@@ -2,9 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import HandleData from '../scripts/modules/HandleData.js'
 import Alert from '../scripts/modules/AlertToggle.js'
-import ChartData from '../scripts/modules/ChartData.js'
-import TradeData from '../scripts/modules/TradeData.js'
-import BookData from '../scripts/modules/BookData.js'
 import MarketBookAsks from '../scripts/modules/components/MarketBookAsks'
 import MarketBookBids from '../scripts/modules/components/MarketBookBids'
 import TradeHistory from '../scripts/modules/components/TradeHistory'
@@ -12,14 +9,12 @@ import CoinChart from '../scripts/modules/components/CoinChart'
 import AlertTicker from '../scripts/modules/components/AlertTicker'
 import BtcTicker from '../scripts/modules/components/BtcTicker'
 import ChangeDisplay from '../scripts/modules/components/ChangeDisplay'
+import {convertDataChart, convertDataBook, convertDataTrade, buildApiLinks} from '../scripts/modules/formatRestData'
 import '../styles/styles.css';
 
 const dataStream = new HandleData();
 const alertHandle = new Alert();
 const app = document.getElementById('app');
-const getChartData = new ChartData();
-const getTradeData = new TradeData();
-const getBookData = new BookData();
 
 if (/Mobi/.test(navigator.userAgent)) {
     alert('This app is in beta, and currently only supports desktop browsers');
@@ -31,8 +26,8 @@ class CryptoviewerApp extends React.Component {
         this.populateState = this.populateState.bind(this);
         this.getRestAPIData = this.getRestAPIData.bind(this);
         this.handleGetData = this.handleGetData.bind(this);
-        this.setStateRestAPI = this.setStateRestAPI.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
+        this.fetchData = this.fetchData.bind(this);
         this.alertHandle = alertHandle;
         this.coin;
         this.altCoinRestInterval;
@@ -40,6 +35,26 @@ class CryptoviewerApp extends React.Component {
             currentCoin: 'BTCUSDT'
         }
     }
+
+    fetchData(coinAPI, func, stateName) {
+    fetch(coinAPI)
+        .then((response) => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then((response) => {
+            this.setState(()=>{
+                return {
+                    [stateName]: func(response)
+                }
+            })
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+}
 
     populateState() {
         setInterval(() => {
@@ -61,7 +76,6 @@ class CryptoviewerApp extends React.Component {
             }
         })
     }
-
     componentDidMount() {
         this.populateState();
         this.getRestAPIData(this.state.currentCoin)
@@ -73,36 +87,15 @@ class CryptoviewerApp extends React.Component {
         }
     }
 
-
-
     getRestAPIData(coin) {
-        setTimeout(() => {
-            getTradeData.fetchData(coin);
-            getBookData.fetchData(coin);
-            getChartData.fetchData(coin);
-            this.setStateRestAPI();
-        }, 1000)
-
+        let link = buildApiLinks(coin)
 
         this.altCoinRestInterval = setInterval(() => {
-            getTradeData.fetchData(coin);
-            getBookData.fetchData(coin);
-            getChartData.fetchData(coin);
-            this.setStateRestAPI();
+            this.fetchData(link.chartAPI, convertDataChart, 'chartData')
+            this.fetchData(link.tradeAPI, convertDataTrade, 'tradeHistory')
+            this.fetchData(link.bookAPI, convertDataBook, 'marketBook')
+            
         }, 3000)
-    }
-
-
-    setStateRestAPI() {
-        setTimeout(() => {
-            this.setState(() => {
-                return {
-                    marketBook: getBookData.dataOut,
-                    tradeHistory: getTradeData.dataOut,
-                    chartData: getChartData.formattedData
-                }
-            })
-        }, 0)
     }
 
     roundToTwo(num, places) {
