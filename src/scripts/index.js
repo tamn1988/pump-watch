@@ -36,6 +36,8 @@ class CryptoviewerApp extends React.Component {
         }
     }
 
+    //test
+
     fetchData(coinAPI, func, stateName) {
     fetch(coinAPI)
         .then((response) => {
