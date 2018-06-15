@@ -32,11 +32,23 @@ class CryptoviewerApp extends React.Component {
         this.coin;
         this.altCoinRestInterval;
         this.state = {
-            currentCoin: 'BTCUSDT'
+            currentCoin: 'BTCUSDT',
+            altcoins: {
+                BTCUSDT: {
+                    current: 'Pending',
+                    change: 'Pending',
+                    s: 'BTCUSDT'
+                }
+            },
+            tradeHistory:[
+                {
+                    price: 'Pending',
+                    amount: 'Pending',
+                    id: 0
+                }
+            ]
         }
     }
-
-    //test
 
     fetchData(coinAPI, func, stateName) {
     fetch(coinAPI)
@@ -106,7 +118,7 @@ class CryptoviewerApp extends React.Component {
     }
 
     render() {
-        return (
+        return ( 
             <div>
                 <div className="header">
                     <div className="wrapper">

@@ -24,7 +24,7 @@ export default class CoinChart extends React.Component {
                         </LineChart>
                     </ResponsiveContainer>
                     <div className='chart__bottom-bar'>
-                        <h2 className='chart__price'>{this.props.trades[0].price}</h2>
+                        <h2 className='chart__price'>{this.props.trades && this.props.trades[0].price}</h2>
                     </div>
                 </div>
 

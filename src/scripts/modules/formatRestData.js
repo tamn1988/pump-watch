@@ -5,7 +5,7 @@ const buildApiLinks = (coin) => {
         chartAPI: 'https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v1/klines?symbol=' + coin + '&interval=15m&limit=500'
     }
 }
-
+//
 const roundToTwo = (num, places) => {
     let multiplier = Math.pow(10, places);
     return Math.round(num * multiplier) / multiplier;
@@ -57,20 +57,3 @@ const convertDataChart = (data) => {
 }
 export {convertDataChart, convertDataBook, convertDataTrade, buildApiLinks};
 
-// fetchData(coinAPI, func, stateName) {
-//     fetch(coinAPI)
-//         .then((response) => {
-//             if (!response.ok) {
-//                 throw Error(response.statusText);
-//             }
-//             return response.json();
-//         })
-//         .then((response) => {
-//             this.setState((stateName) => {
-//                 stateName: func(response);
-//             })
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//         })
-// }

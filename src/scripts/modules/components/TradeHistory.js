@@ -9,7 +9,7 @@ export default class TradeHistory extends React.Component {
         return nextProps.trades !== this.props.trades
     }
     render() {
-        if (this.props.trades) {
+        if (this.props.trades[0].price !== 'Pending') {
             return this.props.trades.map((item) => {
                 return (
                     <div className='trade-history' key={item.id}>
