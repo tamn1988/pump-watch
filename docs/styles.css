@@ -232,9 +232,16 @@ body{
     }
 
 .trade-history__price{
-        color: rgb(206, 206, 95);
         width: 40%;
         text-align: left;
+    }
+
+.trade-history__price--green{
+        color:rgb(102, 197, 102);
+    }
+
+.trade-history__price--red{
+        color: rgb(238, 81, 81);
     }
 
 .trade-history__qty{

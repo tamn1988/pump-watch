@@ -21,9 +21,16 @@
     }
 
     &__price{
-        color: rgb(206, 206, 95);
         width: 40%;
         text-align: left;
+    }
+
+    &__price--green{
+        color:rgb(102, 197, 102);
+    }
+
+    &__price--red{
+        color: rgb(238, 81, 81);
     }
 
     &__qty{

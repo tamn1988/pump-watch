@@ -13,8 +13,14 @@ class HandleData {
 
     reset() {
         setInterval(() => {
-            this.dataToExport = undefined;
-            console.log('reset');
+            this.dataToExport = {
+                BTCUSDT: {
+                    current: 0,
+                    change: 0,
+                    s: 'BTCUSDT',
+                    c: 0
+                }
+            }
         }, 120000)
     }
 
@@ -42,12 +48,16 @@ class HandleData {
     filterAndParse(data) {
         return JSON.parse(data.data).filter((altCoin) => {
             //Filter conditions: Only btc pairs with greater than 1k volume
-            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000;
+            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000
         })
     }
 
     addToDataToExport(data) {
         data.map((altCoin) => {
+            if (altCoin.s === 'BTCUSDT' && this.dataToExport.BTCUSDT.current === 0){
+                this.dataToExport.BTCUSDT = altCoin;
+            }
+
             if (!this.dataToExport[altCoin.s]) {
                 //Add new altcoins to object that were not available in previous stream.
                 this.dataToExport[altCoin.s] = altCoin;
@@ -64,4 +74,8 @@ class HandleData {
 }
 
 export default HandleData;
+
+
+
+
 
