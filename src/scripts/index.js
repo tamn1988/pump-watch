@@ -7,7 +7,7 @@ import MarketBookBids from '../scripts/modules/components/MarketBookBids'
 import TradeHistory from '../scripts/modules/components/TradeHistory'
 import CoinChart from '../scripts/modules/components/CoinChart'
 import AlertTicker from '../scripts/modules/components/AlertTicker'
-import BtcTicker from '../scripts/modules/components/BtcTicker'
+import Header from '../scripts/modules/components/Header'
 import ChangeDisplay from '../scripts/modules/components/ChangeDisplay'
 import {convertDataChart, convertDataBook, convertDataTrade, buildApiLinks} from '../scripts/modules/formatRestData'
 import '../styles/styles.css';
@@ -120,19 +120,7 @@ class CryptoviewerApp extends React.Component {
     render() {
         return ( 
             <div>
-                <div className="header">
-                    <div className="wrapper">
-                        <div className="header__top-bar">
-                            <div className="header--logo__container">
-                                <div className='header--logo-top'>Pump</div>
-                                <div className="header--logo-bottom">Watch&#8599;</div>
-                            </div>
-                            <div className="header__btc-ticker">
-                                <BtcTicker altcoins={this.state.altcoins} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Header altcoins={this.state.altcoins} />
                 <div className="flex flex--justify-center wrapper">
                     <div className="left-panel">
                         <div className="left-panel__title">

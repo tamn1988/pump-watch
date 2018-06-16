@@ -17,7 +17,15 @@
         background-color: $mainGreen;
         border: 1px solid $altBlack;
         position: relative;
+        transition: all .2s linear;
     }
+
+    .change__container:hover{
+        border: 1px solid #fff;
+        transform: scale(1.05);
+    }
+
+
 
     &__link{
         text-decoration: none;
