@@ -70,7 +70,7 @@ class CryptoviewerApp extends React.Component {
         })
 }
 
-    populateState() {
+    populateState() {        
         setInterval(() => {
             this.setState(() => {
                 return {
@@ -103,6 +103,9 @@ class CryptoviewerApp extends React.Component {
 
     getRestAPIData(coin) {
         let link = buildApiLinks(coin)
+        this.fetchData(link.chartAPI, convertDataChart, 'chartData')
+        this.fetchData(link.tradeAPI, convertDataTrade, 'tradeHistory')
+        this.fetchData(link.bookAPI, convertDataBook, 'marketBook')
 
         this.altCoinRestInterval = setInterval(() => {
             this.fetchData(link.chartAPI, convertDataChart, 'chartData')
