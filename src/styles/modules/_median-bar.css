@@ -1,0 +1,43 @@
+.median-bar{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #fff;
+    text-align: center;
+    background-color: $altBlack;
+
+
+    &__price{
+        margin: 0;
+    }
+
+    &__interval-input{
+        padding: 5.5px;
+        color: #fff;
+        background-color: $altMain;
+        border: 1px solid #00d5ff;
+    }
+
+
+    &__left-container{
+        width: 33%;
+    }
+    &__center-container{
+        width: 33%;
+    }
+    &__right-container{
+        width: 33%;
+    }
+
+
+}
+
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+

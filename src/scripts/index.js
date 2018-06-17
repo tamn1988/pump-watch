@@ -2,18 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import HandleData from '../scripts/modules/HandleData.js'
 import Alert from '../scripts/modules/AlertToggle.js'
-import MarketBookAsks from '../scripts/modules/components/MarketBookAsks'
-import MarketBookBids from '../scripts/modules/components/MarketBookBids'
-import TradeHistory from '../scripts/modules/components/TradeHistory'
-import CoinChart from '../scripts/modules/components/CoinChart'
-import AlertTicker from '../scripts/modules/components/AlertTicker'
+import LeftPanel from '../scripts/modules/components/LeftPanel'
+import RightPanel from '../scripts/modules/components/RightPanel'
+import CenterPanel from '../scripts/modules/components/CenterPanel'
+import Footer from '../scripts/modules/components/Footer'
 import Header from '../scripts/modules/components/Header'
-import ChangeDisplay from '../scripts/modules/components/ChangeDisplay'
-import {convertDataChart, convertDataBook, convertDataTrade, buildApiLinks} from '../scripts/modules/formatRestData'
+import { convertDataChart, convertDataBook, convertDataTrade, buildApiLinks } from '../scripts/modules/formatRestData'
 import '../styles/styles.css';
 
-const dataStream = new HandleData();
-const alertHandle = new Alert();
+// const dataStream = new HandleData();
+// const alertHandle = new Alert();
 const app = document.getElementById('app');
 
 if (/Mobi/.test(navigator.userAgent)) {
@@ -28,7 +26,8 @@ class CryptoviewerApp extends React.Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.fetchData = this.fetchData.bind(this);
-        this.alertHandle = alertHandle;
+        this.alertHandle = new Alert();
+        this.dataStream = new HandleData();
         this.coin;
         this.altCoinRestInterval;
         this.state = {
@@ -40,7 +39,7 @@ class CryptoviewerApp extends React.Component {
                     s: 'BTCUSDT'
                 }
             },
-            tradeHistory:[
+            tradeHistory: [
                 {
                     price: 'Pending',
                     amount: 'Pending',
@@ -51,31 +50,31 @@ class CryptoviewerApp extends React.Component {
     }
 
     fetchData(coinAPI, func, stateName) {
-    fetch(coinAPI)
-        .then((response) => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then((response) => {
-            this.setState(()=>{
-                return {
-                    [stateName]: func(response)
+        fetch(coinAPI)
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
                 }
+                return response.json();
             })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-}
+            .then((response) => {
+                this.setState(() => {
+                    return {
+                        [stateName]: func(response)
+                    }
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 
-    populateState() {        
+    populateState() {
         setInterval(() => {
             this.setState(() => {
                 return {
-                    altcoins: dataStream.dataToExport,
-                    pinned: alertHandle.pinned
+                    altcoins: this.dataStream.dataToExport,
+                    pinned: this.alertHandle.pinned
                 }
             })
         }, 400)
@@ -111,7 +110,7 @@ class CryptoviewerApp extends React.Component {
             this.fetchData(link.chartAPI, convertDataChart, 'chartData')
             this.fetchData(link.tradeAPI, convertDataTrade, 'tradeHistory')
             this.fetchData(link.bookAPI, convertDataBook, 'marketBook')
-            
+
         }, 3000)
     }
 
@@ -121,69 +120,22 @@ class CryptoviewerApp extends React.Component {
     }
 
     render() {
-        return ( 
+        return (
             <div>
                 <Header altcoins={this.state.altcoins} />
                 <div className="flex flex--justify-center wrapper">
-                    <div className="left-panel">
-                        <div className="left-panel__title">
-                            Order Book
-                        </div>
-                        <div className="order-book">
-                            <div className="order-book__ask__container" >
-                                <MarketBookAsks orderBook={this.state.marketBook} />
-                            </div>
-                            <div className="order-book__median">
-                                <p className='order-book__median__info'>{this.state.currentCoin}</p>
-                            </div>
-                            <div className="order-book__bid__container">
-                                <MarketBookBids orderBook={this.state.marketBook} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="center-panel">
-                        <div className="center-panel__title">
-                            Price Chart
-                    </div>
-                        <div className='chart'>
-                            <CoinChart
-                                trades={this.state.tradeHistory}
-                                chartData={this.state.chartData}
-                            />
-                        </div>
-                        <div className="change">
-                            <ChangeDisplay
-                                altcoins={this.state.altcoins}
-                                handleGetData={this.handleGetData}
-                                alertHandle={this.alertHandle}
-                            />
-                        </div>
-                    </div>
-                    <div className="right-panel">
-                        <div className="right-panel__title">
-                            Trade
-                    </div>
-                        <div className='trade-history__bar'>
-                            <span>Price</span>
-                            <span>Amount</span>
-                            <span>Time</span>
-                        </div>
-                        <div className="trade-history__container">
-                            <TradeHistory trades={this.state.tradeHistory} />
-                        </div>
-                    </div>
+                    <LeftPanel orderBook={this.state.marketBook} currentCoin={this.state.currentCoin} />
+                    <CenterPanel
+                        altcoins={this.state.altcoins}
+                        handleGetData={this.handleGetData}
+                        alertHandle={this.alertHandle}
+                        tradeHistory={this.state.tradeHistory}
+                        chartData={this.state.chartData}
+                        reset={this.dataStream.reset}
+                    />
+                    <RightPanel tradeHistory={this.state.tradeHistory} />
                 </div>
-                <div className="alert-ticker">
-                    <div className="alert-ticker__container">
-                        <div className="alert-ticker__slide">
-                            <span className="alert-ticker__title">ALERTS: <AlertTicker handleGetData={this.handleGetData}
-                                pinned={this.state.pinned} /></span>
-                        </div>
-                    </div>
-                    <div className="footer">
-                        Copyright Tam Nguyen 2018
-                    </div>
-                </div>
+                <Footer handleGetData={this.handleGetData} pinned={this.state.pinned} />
             </div>
         )
     }

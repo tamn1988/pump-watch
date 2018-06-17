@@ -28,6 +28,18 @@ body{
         justify-content: space-between;
     }
 
+.flex--justify-space-around{
+        justify-content: space-around;
+    }
+
+.flex--full-h{
+        height: 100%;
+    }
+
+.flex--aligni-center{
+        align-items: center;
+    }
+
 .change{
     display: flex;
     flex-direction: row;
@@ -93,19 +105,6 @@ body{
 .chart__container{
         width: 100%;
         height: 100%;
-    }
-
-.chart__bottom-bar{
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        border: 1px solid #fff;
-        text-align: center;
-        background-color: #2f313f;
-    }
-
-.chart__price{
-        margin: 0;
     }
 
 .left-panel{
@@ -369,6 +368,50 @@ body{
 @keyframes slide{
     0%{-webkit-transform: translateX(100%);transform: translateX(100%)}
     100%{-webkit-transform: translateX(-100%);transform: translateX(-100%)}
+}
+
+.median-bar{
+    width: 100%;
+    height: 40px;
+    border: 1px solid #fff;
+    text-align: center;
+    background-color: #2f313f;
+
+
+}
+
+.median-bar__price{
+        margin: 0;
+    }
+
+.median-bar__interval-input{
+        padding: 5.5px;
+        color: #fff;
+        background-color: #25273b;
+        border: 1px solid #00d5ff;
+    }
+
+.median-bar__left-container{
+        width: 33%;
+    }
+
+.median-bar__center-container{
+        width: 33%;
+    }
+
+.median-bar__right-container{
+        width: 33%;
+    }
+
+/* Hide HTML5 Up and Down arrows. */
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 .footer{

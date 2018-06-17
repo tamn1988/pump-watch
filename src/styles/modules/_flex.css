@@ -9,4 +9,16 @@
     &--justify-space-between{
         justify-content: space-between;
     }
+
+    &--justify-space-around{
+        justify-content: space-around;
+    }
+
+    &--full-h{
+        height: 100%;
+    }
+
+    &--aligni-center{
+        align-items: center;
+    }
 }

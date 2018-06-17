@@ -23,11 +23,7 @@ export default class CoinChart extends React.Component {
                             <YAxis type="number" padding={{ right: 20 }} tick={{ fontSize: ".8rem" }} axisLine={false} width={60} orientation='right' domain={['dataMin', 'dataMax']} />
                         </LineChart>
                     </ResponsiveContainer>
-                    <div className='chart__bottom-bar'>
-                        <h2 className='chart__price'>{this.props.trades && this.props.trades[0].price}</h2>
-                    </div>
                 </div>
-
             )
         }
         return <div>Waiting on Binance API...</div>

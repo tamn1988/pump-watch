@@ -1,3 +1,5 @@
+import { types } from "util";
+
 class HandleData {
     constructor() {
         this.dataToExport = undefined;
@@ -7,12 +9,20 @@ class HandleData {
         this.addToDataToExport = this.addToDataToExport.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.reset = this.reset.bind(this);
-        this.reset();
+        this.resetInterval;
         this.getData();
     }
 
-    reset() {
-        setInterval(() => {
+    reset(value) {
+        //Convert value from minutes to ms
+        let msValue = value * 60000;
+   
+        console.log(msValue);
+        clearInterval(this.resetInterval);
+        console.log('cleared');
+
+        this.resetInterval = setInterval(() => {
+            console.log('reset');
             this.dataToExport = {
                 BTCUSDT: {
                     current: 0,
@@ -21,7 +31,7 @@ class HandleData {
                     c: 0
                 }
             }
-        }, 120000)
+        }, msValue)
     }
 
 
@@ -54,7 +64,7 @@ class HandleData {
 
     addToDataToExport(data) {
         data.map((altCoin) => {
-            if (altCoin.s === 'BTCUSDT' && this.dataToExport.BTCUSDT.current === 0){
+            if (altCoin.s === 'BTCUSDT' && this.dataToExport.BTCUSDT.current === 0) {
                 this.dataToExport.BTCUSDT = altCoin;
             }
 
