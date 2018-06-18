@@ -25,6 +25,7 @@ class CryptoviewerApp extends React.Component {
         this.getRestAPIData = this.getRestAPIData.bind(this);
         this.handleGetData = this.handleGetData.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeVolume = this.handleChangeVolume.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.fetchData = this.fetchData.bind(this);
         this.alertHandle = new Alert();
@@ -33,8 +34,7 @@ class CryptoviewerApp extends React.Component {
         this.altCoinRestInterval;
         this.state = {
             filters: {
-                name: 'BTC',
-                pair: 'BTC',
+                name: '',
                 volume: 0
             },
             currentCoin: 'BTCUSDT',
@@ -98,11 +98,27 @@ class CryptoviewerApp extends React.Component {
 
     handleChange(e) {
         const search = e.target.value.toUpperCase()
-        this.setState((prevState)=>{
+        this.setState((prevState) => {
             return {
                 filters: {
                     ...prevState.filters,
                     name: search
+                }
+            }
+        })
+    }
+
+    handleChangeVolume(e) {
+        let volume = parseInt(e.target.value)
+        if (!volume || volume < 0){
+            volume = 0
+        }
+
+        this.setState((prevState) => {
+            return {
+                filters: {
+                    ...prevState.filters,
+                    volume
                 }
             }
         })
@@ -152,7 +168,9 @@ class CryptoviewerApp extends React.Component {
                         chartData={this.state.chartData}
                         reset={this.dataStream.reset}
                         handleChange={this.handleChange}
+                        handleChangeVolume={this.handleChangeVolume}
                         filters={this.state.filters}
+
                     />
                     <RightPanel tradeHistory={this.state.tradeHistory} />
                 </div>

@@ -8,7 +8,7 @@ export default class ChangeDisplay extends React.Component {
     render() {
         //Filtered altcoins this.state.filters.name
         const filtered = Object.keys(this.props.altcoins).reduce((acc, key)=>{
-            if (key.indexOf(this.props.filters.name) !== -1){
+            if (key.indexOf(this.props.filters.name) !== -1 && this.props.altcoins[key].q >= this.props.filters.volume){
                 acc[key] = this.props.altcoins[key];
             }
             return acc

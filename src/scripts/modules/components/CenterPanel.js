@@ -18,7 +18,12 @@ const CenterPanel = (props) => {
                 />
             </div>
 
-            <MedianBar trades={props.tradeHistory} reset={props.reset} handleChange={props.handleChange} />
+            <MedianBar
+                trades={props.tradeHistory}
+                reset={props.reset}
+                handleChange={props.handleChange}
+                handleChangeVolume={props.handleChangeVolume}
+            />
 
             <div className="change">
                 <ChangeDisplay

@@ -20,6 +20,10 @@ body{
     flex-wrap: wrap;
 }
 
+.flex--no-wrap{
+        flex-wrap:nowrap;
+    }
+
 .flex--justify-center{
         justify-content: center;
     }
@@ -384,11 +388,24 @@ body{
         margin: 0;
     }
 
-.median-bar__interval-input{
+.median-bar__duration{
+        font-size: .8rem;
+    }
+
+.median-bar__input{
         padding: 5.5px;
         color: #fff;
         background-color: #25273b;
         border: 1px solid #00d5ff;
+    }
+
+.median-bar__input--small{
+        width: 48%;
+        margin: 0 .50% 0 .50%;
+    }
+
+.median-bar__input--medium{
+        width: 75%;
     }
 
 .median-bar__left-container{
