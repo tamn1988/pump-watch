@@ -12,6 +12,7 @@
 
     &__duration{
         font-size: .8rem;
+        margin: 0;
     }
 
     &__input{

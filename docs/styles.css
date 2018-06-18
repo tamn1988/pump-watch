@@ -28,6 +28,10 @@ body{
         justify-content: center;
     }
 
+.flex--justify-end{
+        justify-content: flex-end;
+    }
+
 .flex--justify-space-between{
         justify-content: space-between;
     }
@@ -188,7 +192,7 @@ body{
 }
 
 .header--logo__container{
-        width: 20%;
+        width: 25%;
         position: relative;
     }
 
@@ -209,6 +213,7 @@ body{
 
 .header__top-bar {
         display: flex;
+        width: 80%;
     }
 
 .header__btc-ticker{
@@ -216,6 +221,7 @@ body{
         display: flex;
         align-items: center;
         color: #00d5ff;
+        width: 40%;
     }
 
 .trade-history{
@@ -390,6 +396,7 @@ body{
 
 .median-bar__duration{
         font-size: .8rem;
+        margin: 0;
     }
 
 .median-bar__input{

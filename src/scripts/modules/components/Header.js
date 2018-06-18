@@ -1,5 +1,6 @@
 import React from 'react';
 import BtcTicker from './BtcTicker';
+import CorsCheck from './CorsCheck';
 
 const Header = (props) => {
     return (
@@ -13,6 +14,7 @@ const Header = (props) => {
                     <div className="header__btc-ticker">
                         <BtcTicker altcoins={props.altcoins} />
                     </div>
+                    <CorsCheck handleChangeCors={props.handleChangeCors} />
                 </div>
             </div>
         </div>

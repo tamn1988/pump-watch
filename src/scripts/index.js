@@ -26,6 +26,7 @@ class CryptoviewerApp extends React.Component {
         this.handleGetData = this.handleGetData.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVolume = this.handleChangeVolume.bind(this);
+        this.handleChangeCors = this.handleChangeCors.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.fetchData = this.fetchData.bind(this);
         this.alertHandle = new Alert();
@@ -33,6 +34,7 @@ class CryptoviewerApp extends React.Component {
         this.coin;
         this.altCoinRestInterval;
         this.state = {
+            cors: 'no',
             filters: {
                 name: '',
                 volume: 0
@@ -124,19 +126,29 @@ class CryptoviewerApp extends React.Component {
         })
     }
 
+    handleChangeCors(value){
+        console.log(value)
+        this.setState((prevState)=>{
+            return {
+                cors: value
+            }
+        })
+    }
+
     componentDidMount() {
         this.populateState();
-        this.getRestAPIData(this.state.currentCoin)
+        this.getRestAPIData(this.state.currentCoin, this.state.cors)
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.currentCoin !== this.state.currentCoin) {
-            this.getRestAPIData(this.state.currentCoin)
+        if (prevState.currentCoin !== this.state.currentCoin || prevState.cors !== this.state.cors) {
+            clearInterval(this.altCoinRestInterval)
+            this.getRestAPIData(this.state.currentCoin, this.state.cors)
         }
     }
 
-    getRestAPIData(coin) {
-        let link = buildApiLinks(coin)
+    getRestAPIData(coin, cors) {
+        let link = buildApiLinks(coin, cors)
         this.fetchData(link.chartAPI, convertDataChart, 'chartData')
         this.fetchData(link.tradeAPI, convertDataTrade, 'tradeHistory')
         this.fetchData(link.bookAPI, convertDataBook, 'marketBook')
@@ -157,7 +169,7 @@ class CryptoviewerApp extends React.Component {
     render() {
         return (
             <div>
-                <Header altcoins={this.state.altcoins} />
+                <Header altcoins={this.state.altcoins} handleChangeCors={this.handleChangeCors} />
                 <div className="flex flex--justify-center wrapper">
                     <LeftPanel orderBook={this.state.marketBook} currentCoin={this.state.currentCoin} />
                     <CenterPanel

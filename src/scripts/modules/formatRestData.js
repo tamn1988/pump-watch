@@ -1,4 +1,13 @@
-const buildApiLinks = (coin) => {
+const buildApiLinks = (coin, cors) => {
+    console.log('new build');
+    console.log(cors)
+    if (cors === 'yes') {
+        return {
+            tradeAPI: 'https://api.binance.com/api/v1/trades?symbol=' + coin + '&limit=35',
+            bookAPI: 'https://api.binance.com/api/v1/depth?symbol=' + coin + '&limit=20',
+            chartAPI: 'https://api.binance.com/api/v1/klines?symbol=' + coin + '&interval=15m&limit=500'
+        }
+    } 
     return {
         tradeAPI: 'https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v1/trades?symbol=' + coin + '&limit=35',
         bookAPI: 'https://cors-anywhere.herokuapp.com/https://api.binance.com/api/v1/depth?symbol=' + coin + '&limit=20',
@@ -22,7 +31,7 @@ const convertDataTrade = (data) => {
         })
     })
     tradeData.reverse();
-  return tradeData;
+    return tradeData;
 }
 
 const convertDataBook = (data) => {
@@ -55,5 +64,5 @@ const convertDataChart = (data) => {
     })
     return chartData;
 }
-export {convertDataChart, convertDataBook, convertDataTrade, buildApiLinks};
+export { convertDataChart, convertDataBook, convertDataTrade, buildApiLinks };
 
