@@ -1,11 +1,15 @@
-import { types } from "util";
-
 class HandleData {
     constructor() {
-        this.dataToExport = undefined;
+        this.dataToExport =  {
+            BTCUSDT: {
+                current: 0,
+                change: 0,
+                s: 'BTCUSDT',
+                c: 0
+            }
+        }
         this.socket = new WebSocket('wss://stream.binance.com:9443/ws/!ticker@arr');
         this.convertArrayToObj = this.convertArrayToObj.bind(this);
-        this.filterAndParse = this.filterAndParse.bind(this);
         this.addToDataToExport = this.addToDataToExport.bind(this);
         this.roundToTwo = this.roundToTwo.bind(this);
         this.reset = this.reset.bind(this);
@@ -17,12 +21,9 @@ class HandleData {
         //Convert value from minutes to ms
         let msValue = value * 60000;
    
-        console.log(msValue);
         clearInterval(this.resetInterval);
-        console.log('cleared');
 
         this.resetInterval = setInterval(() => {
-            console.log('reset');
             this.dataToExport = {
                 BTCUSDT: {
                     current: 0,
@@ -37,7 +38,7 @@ class HandleData {
 
     getData() {
         this.socket.addEventListener('message', ((event) => {
-            let liveData = this.filterAndParse(event);
+            let liveData = JSON.parse(event.data)
             //Only add to dataToExport if object has no value
             if (!this.dataToExport) {
                 this.dataToExport = this.convertArrayToObj(liveData);
@@ -54,14 +55,6 @@ class HandleData {
             }, {})
         return arrayToObject(array);
     }
-
-    filterAndParse(data) {
-        return JSON.parse(data.data).filter((altCoin) => {
-            //Filter conditions: Only btc pairs with greater than 1k volume
-            return altCoin.s.indexOf('BTC') !== -1 && altCoin.q >= 1000
-        })
-    }
-
     addToDataToExport(data) {
         data.map((altCoin) => {
             if (altCoin.s === 'BTCUSDT' && this.dataToExport.BTCUSDT.current === 0) {

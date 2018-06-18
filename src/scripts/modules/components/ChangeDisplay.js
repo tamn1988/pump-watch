@@ -1,18 +1,37 @@
 import React from 'react';
 
-const ChangeDisplay = (props) => {
-    if (props.altcoins) {
-        return Object.keys(props.altcoins).map((key, i) => {
-            return (
-                <div className={props.alertHandle.alertStyle(props.altcoins[key])} key={props.altcoins[key]['s']}>
-                    <h4 className='change__title' key={props.altcoins[key]['s'] + 'name'}>{props.altcoins[key]['s']}</h4>
-                    <p className='change__price' key={props.altcoins[key]['s'] + 'change'}>{props.altcoins[key]['change'] + "%"}</p>
-                    <a href="#" key={props.altcoins[key]['s'] + 'link'} className='change__link' onClick={props.handleGetData} coin-name={props.altcoins[key]['s']}></a>
-                </div>
-            )
-        })
+export default class ChangeDisplay extends React.Component {
+    constructor(props) {
+        super(props)
     }
-    return <div>Connecting...</div>
+
+    render() {
+        //Filtered altcoins this.state.filters.name
+        const filtered = Object.keys(this.props.altcoins).reduce((acc, key)=>{
+            if (key.indexOf(this.props.filters.name) !== -1){
+                acc[key] = this.props.altcoins[key];
+            }
+            return acc
+        }, {});
+
+        if (filtered) {
+            return Object.keys(filtered).map((key) => {
+                return (
+                    <div className={this.props.alertHandle.alertStyle(filtered[key])} key={filtered[key]['s']}>
+                        <h4 className='change__title' key={filtered[key]['s'] + 'name'}>{filtered[key]['s']}</h4>
+                        <p className='change__price' key={filtered[key]['s'] + 'change'}>{filtered[key]['change'] + "%"}</p>
+                        <a href="#" key={filtered[key]['s'] + 'link'} className='change__link' onClick={this.props.handleGetData} coin-name={filtered[key]['s']}></a>
+                    </div>
+                )
+            })
+        }
+        return <div>Connecting...</div>
+    }
 }
 
-export default ChangeDisplay
+
+
+
+
+
+

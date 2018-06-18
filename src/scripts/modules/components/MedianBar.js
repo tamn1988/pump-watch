@@ -36,7 +36,9 @@ export default class MedianBar extends React.Component {
                         <h2 className='median-bar__price'>{this.props.trades && this.props.trades[0].price}</h2>
                     </div>
                     <div className="median-bar__right-container">
-                        &nbsp;
+                        <form>
+                            <input className='median-bar__interval-input' type="text" placeholder='Search Coin' onChange={this.props.handleChange} />
+                        </form>
                     </div>
                 </div>
             </div>
