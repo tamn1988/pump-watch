@@ -1,0 +1,50 @@
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    z-index: 1;
+    /* transition: opacity .3s linear; */
+
+    &--body-prevent-scroll{
+        overflow: hidden;
+    }
+
+    &__close{
+        position: absolute;
+        right: 2%;
+        top: 2%;
+        z-index: 9999999999;
+        font-size: 1.7rem;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    &__close:hover{
+        color: #fff;
+    }
+
+    &__inner{
+        position: absolute;
+        max-width: 640px;
+        width: 100%;
+        background-color:rgb(102, 103, 112);
+        left: 50%;
+        top: 8%;
+        transform:translateX(-50%);
+
+    }
+
+    &__info{
+        padding: 1rem;
+    }
+    
+    a{
+        text-decoration: none;
+        color: #00d5ff;
+    }
+
+}

@@ -7,6 +7,7 @@ import RightPanel from '../scripts/modules/components/RightPanel'
 import CenterPanel from '../scripts/modules/components/CenterPanel'
 import Footer from '../scripts/modules/components/Footer'
 import Header from '../scripts/modules/components/Header'
+import Modal from '../scripts/modules/components/Modal'
 import { convertDataChart, convertDataBook, convertDataTrade, buildApiLinks } from '../scripts/modules/formatRestData'
 import '../styles/styles.css';
 
@@ -187,6 +188,7 @@ class CryptoviewerApp extends React.Component {
                     <RightPanel tradeHistory={this.state.tradeHistory} />
                 </div>
                 <Footer handleGetData={this.handleGetData} pinned={this.state.pinned} />
+                <Modal />
             </div>
         )
     }
