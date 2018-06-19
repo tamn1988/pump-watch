@@ -1,6 +1,7 @@
 import React from 'react';
 import CoinChart from './CoinChart';
 import ChangeDisplay from './ChangeDisplay';
+import CurrentFilters from './CurrentFilters'
 import MedianBar from './MedianBar';
 
 
@@ -26,6 +27,7 @@ const CenterPanel = (props) => {
             />
 
             <div className="change">
+                <CurrentFilters filters={props.filters} />
                 <ChangeDisplay
                     altcoins={props.altcoins}
                     handleGetData={props.handleGetData}

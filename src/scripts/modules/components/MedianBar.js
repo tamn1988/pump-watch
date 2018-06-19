@@ -26,7 +26,6 @@ export default class MedianBar extends React.Component {
         this.input.value = '';
 
     }
-
     render() {
         return (
             <div className='median-bar'>
@@ -43,8 +42,8 @@ export default class MedianBar extends React.Component {
                     </div>
                     <div className="median-bar__right-container">
                         <form className='flex flex--no-wrap'>
-                            <input className='median-bar__input median-bar__input--small' type="text" placeholder='Filter Coin' onChange={this.props.handleChange} />
-                            <input className='median-bar__input median-bar__input--small' step='1' type="number" placeholder='Min Volume' onChange={this.props.handleChangeVolume} />
+                            <input className='median-bar__input median-bar__input--small'  type="text" placeholder='Filter Coin' onChange={this.props.handleChange} />
+                            <input className='median-bar__input median-bar__input--small'  step='1' type="number" placeholder='Min Volume' onChange={this.props.handleChangeVolume} />
                         </form>
                     </div>
                 </div>

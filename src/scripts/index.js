@@ -37,8 +37,8 @@ class CryptoviewerApp extends React.Component {
         this.state = {
             cors: 'no',
             filters: {
-                name: '',
-                volume: 0
+                name: 'BTC',
+                volume: 1000
             },
             currentCoin: 'BTCUSDT',
             altcoins: {

@@ -4,7 +4,6 @@
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    margin-top: 40px;
 
 
     &__container{
@@ -54,5 +53,14 @@
     &__hide{
         opacity: .2;
         background-color: gray;
+    }
+}
+
+.current-filters{
+    width: 100%;
+    margin-left: 20px;
+
+    &__text{
+        color: gold;
     }
 }

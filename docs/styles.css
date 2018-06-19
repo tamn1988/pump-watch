@@ -54,7 +54,6 @@ body{
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    margin-top: 40px;
 }
 
 .change__container{
@@ -105,6 +104,15 @@ body{
         background-color: gray;
     }
 
+.current-filters{
+    width: 100%;
+    margin-left: 20px;
+}
+
+.current-filters__text{
+        color: gold;
+    }
+
 .chart{
     width: 840px;
     height: 300px;
@@ -130,7 +138,6 @@ body{
         top: 0;
         left: 0;
         width: 100%;
-        height: 30px;
         text-align: center;
         text-transform: uppercase;
         margin-bottom: 30px;
@@ -154,7 +161,6 @@ body{
         top: 0;
         left: 0;
         width: 100%;
-        height: 30px;
         text-align: center;
         text-transform: uppercase;
         margin-bottom: 30px;
@@ -177,7 +183,6 @@ body{
         top: 0;
         left: 0;
         width: 100%;
-        height: 30px;
         text-align: center;
         text-transform: uppercase;
         margin-bottom: 30px;
@@ -238,7 +243,7 @@ body{
         justify-content: space-around;
         background-color: #25273b;
         position: absolute;
-        top: 30px;
+        top: 32px;
         left: 0;
         width: 100%;
         height: 25px;
@@ -294,7 +299,6 @@ body{
         height: 30px;
         margin: 0 -1rem;
         text-align: center;
-        line-height: 30px;
         border-top: 2px solid #fff;
         border-bottom: 2px solid #fff;
     }

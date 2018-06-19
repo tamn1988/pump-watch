@@ -8,11 +8,11 @@ const LeftPanel = (props) => {
             <div className="left-panel__title">
                 Order Book
             </div>
-            <div className="order-book">
+            <div className="order-book ">
                 <div className="order-book__ask__container" >
                     <MarketBookAsks orderBook={props.orderBook} />
                 </div>
-                <div className="order-book__median">
+                <div className="order-book__median flex flex--justify-center flex--aligni-center">
                     <p className='order-book__median__info'>{props.currentCoin}</p>
                 </div>
                 <div className="order-book__bid__container">
