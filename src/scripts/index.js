@@ -113,7 +113,7 @@ class CryptoviewerApp extends React.Component {
 
     handleChangeVolume(e) {
         let volume = parseInt(e.target.value)
-        if (!volume || volume < 0){
+        if (!volume || volume < 0) {
             volume = 0
         }
 
@@ -127,9 +127,8 @@ class CryptoviewerApp extends React.Component {
         })
     }
 
-    handleChangeCors(value){
-        console.log(value)
-        this.setState((prevState)=>{
+    handleChangeCors(value) {
+        this.setState((prevState) => {
             return {
                 cors: value
             }
@@ -189,9 +188,13 @@ class CryptoviewerApp extends React.Component {
                 </div>
                 <Footer handleGetData={this.handleGetData} pinned={this.state.pinned} />
                 <Modal />
+
             </div>
         )
     }
 }
+
+
+
 
 ReactDOM.render(<CryptoviewerApp />, app)

@@ -19,7 +19,8 @@ export default class ChangeDisplay extends React.Component {
                 return (
                     <div className={this.props.alertHandle.alertStyle(filtered[key])} key={filtered[key]['s']}>
                         <h4 className='change__title' key={filtered[key]['s'] + 'name'}>{filtered[key]['s']}</h4>
-                        <p className='change__price' key={filtered[key]['s'] + 'change'}>{filtered[key]['change'] + "%"}</p>
+                        <span className='change__price' key={filtered[key]['s'] + 'change'}>{"P:" + filtered[key]['change'] + "%"}</span>
+                        <span className='change__price' key={filtered[key]['s'] + 'volume'}>{"V: "+ filtered[key]['volumeChange'] + "%"}</span>
                         <a href="#" key={filtered[key]['s'] + 'link'} className='change__link' onClick={this.props.handleGetData} coin-name={filtered[key]['s']}></a>
                     </div>
                 )

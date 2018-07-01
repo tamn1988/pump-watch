@@ -67,6 +67,8 @@ class HandleData {
             };
             this.dataToExport[altCoin.s]['change'] = this.roundToTwo((((altCoin.c - this.dataToExport[altCoin.s]['c']) / this.dataToExport[altCoin.s]['c']) * 100), 2);
             this.dataToExport[altCoin.s]['current'] = altCoin.c;
+            this.dataToExport[altCoin.s]['volumeChange'] = this.roundToTwo((((altCoin.q - this.dataToExport[altCoin.s]['q']) / this.dataToExport[altCoin.s]['q']) * 100),2);
+            this.dataToExport[altCoin.s]['volumeCurrent'] = altCoin.q
         })
     }
 

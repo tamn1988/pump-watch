@@ -1,6 +1,4 @@
 const buildApiLinks = (coin, cors) => {
-    console.log('new build');
-    console.log(cors)
     if (cors === 'yes') {
         return {
             tradeAPI: 'https://api.binance.com/api/v1/trades?symbol=' + coin + '&limit=35',
